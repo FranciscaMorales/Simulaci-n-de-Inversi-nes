@@ -1,0 +1,9 @@
+escenario,regla,p_educ,p_villa_completa,pct_casa_financiada_prom,p_herencia,p_las_tres
+"Base historica 6,7% real",Villarrica antes que herencia (actual),1.0,0.96402,0.96402,0.93596,0.90002
+"Base historica 6,7% real","Herencia primero, reserva al 4,7% (todo o nada)",1.0,0.86566,0.86566,0.9954,0.8611
+"Base historica 6,7% real","Herencia primero, reserva al 4,7% (casa parcial)",1.0,0.86566,0.9677039218646889,0.97838,0.8611
+"Base historica 6,7% real","Herencia primero, reserva al 3,0% (todo o nada)",1.0,0.79114,0.79114,0.99908,0.79026
+Prudente 5% real,Villarrica antes que herencia (actual),1.0,0.79782,0.79782,0.72126,0.52454
+Prudente 5% real,"Herencia primero, reserva al 4,7% (todo o nada)",1.0,0.53474,0.53474,0.94974,0.49038
+Prudente 5% real,"Herencia primero, reserva al 4,7% (casa parcial)",1.0,0.53474,0.8479179947677014,0.7397,0.49038
+Prudente 5% real,"Herencia primero, reserva al 3,0% (todo o nada)",1.0,0.40692,0.40692,0.98388,0.39676
