@@ -1,0 +1,5 @@
+escenario,p_educ,p_villa,p_her,p_conj
+Sin desempleo (base),1.0,0.96402,0.90002,0.90002
+"5% anual, independiente del mercado",1.0,0.9565,0.88554,0.88554
+"5% normal, 25% si la cartera cayó >10% en 12m",1.0,0.95326,0.88182,0.88182
+"10% normal, 40% si la cartera cayó >10% en 12m",1.0,0.94358,0.86192,0.86192

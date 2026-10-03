@@ -1,0 +1,11 @@
+escenario,palanca,p_educ,p_villa,p_her,p_conj
+"Base histórica (6,7% real)",Plan actual,1.0,0.96402,0.90002,0.90002
+"Base histórica (6,7% real)",Aporte USD 12.500/año,1.0,0.98474,0.94936,0.94936
+"Base histórica (6,7% real)",Aporte USD 15.000/año,1.0,0.99386,0.97432,0.97432
+"Base histórica (6,7% real)",Herencia USD 400.000,1.0,0.96402,0.91658,0.91658
+"Base histórica (6,7% real)",Aporte 12.500 y herencia 400.000,1.0,0.98474,0.9589,0.9589
+"Retorno menor (5,0% real)",Plan actual,1.0,0.79782,0.52454,0.52454
+"Retorno menor (5,0% real)",Aporte USD 12.500/año,1.0,0.89128,0.67008,0.67008
+"Retorno menor (5,0% real)",Aporte USD 15.000/año,1.0,0.94596,0.78434,0.78434
+"Retorno menor (5,0% real)",Herencia USD 400.000,1.0,0.79782,0.57782,0.57782
+"Retorno menor (5,0% real)",Aporte 12.500 y herencia 400.000,1.0,0.89128,0.7185,0.7185

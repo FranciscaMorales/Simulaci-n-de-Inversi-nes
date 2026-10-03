@@ -1,0 +1,34 @@
+=== Black-Litterman replicado ===
+         vol_anual  w_ref_inv_vol   rc_ref       pi    mu_BL  peso_BL
+SPY        0.14211        0.14849  0.20497  0.02357  0.04182  0.37397
+TLH        0.09765        0.21609  0.14350  0.01134  0.01311  0.15887
+VCLT       0.11243        0.18769  0.20717  0.01885  0.02633  0.13799
+MOM_CMD    0.13119        0.16085  0.08418  0.00894  0.00991  0.11649
+ROT_ACC    0.18169        0.11614  0.16876  0.02481  0.04251  0.08539
+LOW_VOL    0.12359        0.17073  0.19143  0.01915  0.02974  0.12729
+Sharpe (mu_BL/vol): 0.3190   nucleo: 67.0828%
+Markowitz muestra completa: {'SPY': 0.5177, 'TLH': 0.08, 'VCLT': 0.08, 'MOM_CMD': 0.0752, 'ROT_ACC': 0.05, 'LOW_VOL': 0.1972} Sharpe 1.0399
+                               cagr     vol     mdd
+Walk-forward Markowitz       0.0798  0.1130 -0.2123
+Markowitz dentro de muestra  0.1052  0.1235 -0.1992
+        SPY    TLH  VCLT  MOM_CMD  ROT_ACC  LOW_VOL
+2018  0.423  0.197  0.08    0.000    0.115    0.185
+2019  0.347  0.229  0.08    0.000    0.050    0.294
+2020  0.339  0.281  0.08    0.000    0.050    0.250
+2021  0.235  0.385  0.08    0.059    0.050    0.191
+2022  0.294  0.326  0.08    0.042    0.050    0.208
+2023  0.440  0.080  0.08    0.000    0.050    0.350
+2024  0.489  0.080  0.08    0.015    0.050    0.287
+2025  0.540  0.080  0.08    0.079    0.050    0.171
+2026  0.440  0.080  0.08    0.221    0.050    0.129
+                    escenario                           palanca  p_educ  p_villa   p_her  p_conj
+0  Base histórica (6,7% real)                       Plan actual     1.0   0.9640  0.9000  0.9000
+1  Base histórica (6,7% real)             Aporte USD 12.500/año     1.0   0.9847  0.9494  0.9494
+2  Base histórica (6,7% real)             Aporte USD 15.000/año     1.0   0.9939  0.9743  0.9743
+3  Base histórica (6,7% real)              Herencia USD 400.000     1.0   0.9640  0.9166  0.9166
+4  Base histórica (6,7% real)  Aporte 12.500 y herencia 400.000     1.0   0.9847  0.9589  0.9589
+5   Retorno menor (5,0% real)                       Plan actual     1.0   0.7978  0.5245  0.5245
+6   Retorno menor (5,0% real)             Aporte USD 12.500/año     1.0   0.8913  0.6701  0.6701
+7   Retorno menor (5,0% real)             Aporte USD 15.000/año     1.0   0.9460  0.7843  0.7843
+8   Retorno menor (5,0% real)              Herencia USD 400.000     1.0   0.7978  0.5778  0.5778
+9   Retorno menor (5,0% real)  Aporte 12.500 y herencia 400.000     1.0   0.8913  0.7185  0.7185

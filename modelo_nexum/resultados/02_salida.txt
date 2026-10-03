@@ -1,0 +1,100 @@
+=== Black-Litterman replicado ===
+         vol_anual  w_ref_inv_vol   rc_ref       pi    mu_BL  peso_BL
+SPY        0.14211        0.14849  0.20497  0.02357  0.04182  0.37397
+TLH        0.09765        0.21609  0.14350  0.01134  0.01311  0.15887
+VCLT       0.11243        0.18769  0.20717  0.01885  0.02633  0.13799
+MOM_CMD    0.13119        0.16085  0.08418  0.00894  0.00991  0.11649
+ROT_ACC    0.18169        0.11614  0.16876  0.02481  0.04251  0.08539
+LOW_VOL    0.12359        0.17073  0.19143  0.01915  0.02974  0.12729
+Sharpe (mu_BL/vol): 0.3190   nucleo: 67.0828%
+A. Retorno real requerido: [{'capital': 144000, 'retorno_real_requerido': 0.04684}, {'capital': 150000, 'retorno_real_requerido': 0.04586}]
+   tasa_real  VP_educacion  VP_villarrica  VP_herencia  VP_objetivos  VP_aportes  VP_recursos  ratio_cobertura
+0        0.0      101885.0       286714.0     185764.0      574363.0    155753.0     299753.0              1.0
+1        0.0       86376.0       224659.0     114054.0      425088.0    141834.0     285834.0              1.0
+2        0.0       73366.0       176449.0      70356.0      320171.0    129633.0     273633.0              1.0
+3        0.0       62430.0       138906.0      43602.0      244937.0    118904.0     262904.0              1.0
+4        0.0       47718.0        93188.0      19624.0      160530.0    103543.0     247543.0              2.0
+
+B. Base: {'p_educ': np.float64(1.0), 'p_villa': np.float64(0.96402), 'p_her': np.float64(0.90002), 'p_conj': np.float64(0.90002)}
+Faltante mediano cuando falla: Villarrica 58381 Herencia 355619
+            p5        p25        p50        p75        p95
+anio                                                      
+0     144000.0   144000.0   144000.0   144000.0   144000.0
+5     186792.0   221445.0   246074.0   269318.0   301537.0
+10    277445.0   345460.0   396172.0   449492.0   529664.0
+13    344863.0   439266.0   511841.0   590841.0   713651.0
+20    390175.0   562370.0   708713.0   875024.0  1149031.0
+24    476617.0   705589.0   907913.0  1147791.0  1555801.0
+25    503390.0   748222.0   967388.0  1226370.0  1674139.0
+30     44970.0   373096.0   672770.0  1044523.0  1716109.0
+40     79212.0   674556.0  1236761.0  1982649.0  3472333.0
+49    135083.0  1142902.0  2146172.0  3551960.0  6482980.0
+50    145101.0  1211370.0  2283788.0  3778301.0  6955953.0
+Percentiles patrimonio antes de Villarrica (año 25): [ 503390.  748222.  967388. 1226370. 1674139.]
+Percentiles patrimonio antes de herencia (año 50): [ 145101. 1211370. 2283788. 3778301. 6955953.]
+
+Curva P vs CAGR real:
+     cagr_real  p_educ  p_villa   p_her  p_conj
+0      0.0350     1.0   0.4597  0.1164  0.1164
+1      0.0400     1.0   0.5865  0.2280  0.2280
+2      0.0450     1.0   0.7033  0.3696  0.3696
+3      0.0500     1.0   0.7978  0.5245  0.5245
+4      0.0550     1.0   0.8704  0.6708  0.6708
+5      0.0600     1.0   0.9215  0.7897  0.7897
+6      0.0650     1.0   0.9550  0.8755  0.8755
+7      0.0669     1.0   0.9640  0.9000  0.9000
+8      0.0700     1.0   0.9755  0.9320  0.9320
+9      0.0750     1.0   0.9873  0.9646  0.9646
+10     0.0800     1.0   0.9940  0.9825  0.9825
+
+C. Desempleo:
+                                         escenario  p_educ  p_villa   p_her  p_conj
+0                            Sin desempleo (base)     1.0   0.9640  0.9000  0.9000
+1             5% anual, independiente del mercado     1.0   0.9565  0.8855  0.8855
+2   5% normal, 25% si la cartera cayó >10% en 12m     1.0   0.9533  0.8818  0.8818
+3  10% normal, 40% si la cartera cayó >10% en 12m     1.0   0.9436  0.8619  0.8619
+
+D. Alternativas (163 meses):
+                                      cartera  capital  cagr_nominal  cagr_real     vol     mdd  peor_12m  es95_mensual  p_educ  p_villa   p_her  p_conj  p5_pre_villarrica    p5_anio13
+0                    Nexum (Black-Litterman)   144000        0.0869     0.0655  0.0940 -0.2011   -0.1639        0.0548     1.0   0.9619  0.8934  0.8934        499034.5916  342742.4900
+1                        Markowitz histórico   144000        0.1083     0.0866  0.1068 -0.1992   -0.1440        0.0629     1.0   0.9966  0.9911  0.9911        760453.3343  407733.0026
+2  AGF actual 85/15 (85% ACWI, 15% TLH/VCLT)   150000        0.0980     0.0765  0.1239 -0.2593   -0.2138        0.0735     1.0   0.9538  0.9114  0.9114        481048.7693  327656.1270
+3  60/40 núcleo (60% SPY, 20% TLH, 20% VCLT)   144000        0.0959     0.0745  0.1066 -0.2517   -0.2086        0.0619     1.0   0.9704  0.9361  0.9361        534773.2911  344307.1973
+
+E. Riesgo Nexum: {'cagr_nominal': np.float64(0.0882), 'vol_anual': np.float64(0.0938), 'mdd': np.float64(-0.2011), 'mdd_pico': '2021-12-31', 'mdd_valle': '2022-09-30', 'mdd_recuperacion': '2024-06-30', 'peor_12m': np.float64(-0.1639), 'var95_mensual_hist': np.float64(0.0395), 'es95_mensual_hist': np.float64(0.0548), 'var95_mensual_param': np.float64(0.0371), 'var95_anual_param': np.float64(0.0651), 'sortino_ratio': np.float64(1.363), 'ret_vol': np.float64(0.9511), 'sharpe_rf_1.7': np.float64(0.7699), 'mu_BL_cartera': 0.0299, 'beta_vs_SPY': np.float64(0.609)}
+Contribución al riesgo: {'SPY': np.float64(0.5226), 'TLH': np.float64(0.0696), 'VCLT': np.float64(0.1214), 'MOM_CMD': np.float64(0.0386), 'ROT_ACC': np.float64(0.1213), 'LOW_VOL': np.float64(0.1265)}
+          SPY   TLH  VCLT  MOM_CMD  ROT_ACC  LOW_VOL
+SPY      1.00  0.14  0.52     0.06     0.76     0.66
+TLH      0.14  1.00  0.80    -0.00     0.01     0.25
+VCLT     0.52  0.80  1.00     0.03     0.34     0.49
+MOM_CMD  0.06 -0.00  0.03     1.00     0.08     0.12
+ROT_ACC  0.76  0.01  0.34     0.08     1.00     0.41
+LOW_VOL  0.66  0.25  0.49     0.12     0.41     1.00
+           cagr     vol     mdd  peor_12m  var95_m  es95_m  sortino_ratio
+SPY      0.1506  0.1421 -0.2393   -0.1818   0.0605  0.0832         1.5549
+TLH      0.0026  0.0977 -0.4023   -0.2799   0.0465  0.0577         0.1177
+VCLT     0.0265  0.1124 -0.3183   -0.3082   0.0491  0.0659         0.4383
+MOM_CMD  0.0237  0.1312 -0.3118   -0.1182   0.0522  0.0980         0.2250
+ROT_ACC  0.0962  0.1817 -0.3442   -0.2816   0.0808  0.1083         0.9126
+LOW_VOL  0.1077  0.1236 -0.1860   -0.0813   0.0500  0.0692         1.3367
+ROT_ACC vs SPY: retorno activo -0.0427 TE 0.1183
+
+F. Walk-forward 2018-01 a 2026-08:
+                                             cagr     vol     mdd  peor_12m  var95_m  es95_m  sortino_ratio
+Walk-forward BL (re-estimado cada enero)  0.0858  0.1161 -0.2067   -0.1729   0.0501  0.0663         1.1907
+Pesos BL finales (dentro de muestra)      0.0841  0.1099 -0.2011   -0.1639   0.0442  0.0621         1.2761
+AGF 85/15 proxy                           0.1002  0.1414 -0.2593   -0.2138   0.0587  0.0815         1.1516
+        SPY    TLH   VCLT  MOM_CMD  ROT_ACC  LOW_VOL
+2018  0.569  0.066  0.065    0.208    0.065    0.027
+2019  0.511  0.090  0.099    0.152    0.082    0.066
+2020  0.503  0.094  0.103    0.149    0.079    0.073
+2021  0.416  0.149  0.122    0.180    0.073    0.061
+2022  0.420  0.150  0.130    0.136    0.082    0.081
+2023  0.359  0.164  0.135    0.156    0.087    0.099
+2024  0.354  0.155  0.131    0.165    0.090    0.105
+2025  0.366  0.150  0.128    0.169    0.090    0.097
+2026  0.378  0.149  0.129    0.158    0.087    0.099
+
+Pesos estimados solo con 2013-2019: {'SPY': 0.503, 'TLH': 0.094, 'VCLT': 0.103, 'MOM_CMD': 0.1486, 'ROT_ACC': 0.0787, 'LOW_VOL': 0.0727}
+Fuera de muestra 2020-2026, pesos 2013-2019: {'cagr': np.float64(0.1036), 'vol': np.float64(0.126), 'mdd': np.float64(-0.1945), 'peor_12m': np.float64(-0.1533), 'var95_m': np.float64(0.0514), 'es95_m': np.float64(0.0749), 'sortino_ratio': np.float64(1.3733)}
+Fuera de muestra 2020-2026, pesos finales: {'cagr': np.float64(0.0847), 'vol': np.float64(0.1179), 'mdd': np.float64(-0.2011), 'peor_12m': np.float64(-0.1639), 'var95_m': np.float64(0.0477), 'es95_m': np.float64(0.0702), 'sortino_ratio': np.float64(1.2637)}
