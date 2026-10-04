@@ -1,0 +1,22 @@
+Symbol,Description,Quantity,Currency,LastPrice,PricePaid,DayChange,ProfitLoss,MarketValue,ProfitLossPercentage
+AFL,Aflac Inc.,18,USD,115.89,115.78,-0.44,1.98,2086.02,0.10
+ATO,Atmos Energy Corp.,15,USD,159.605,164.01,-0.70,-66.07,2394.075,-2.69
+BK,Bank Of New York Mellon Corp,6,USD,153.41,157.6,-0.38,-25.14,920.46,-2.66
+DELL,Dell Technologies Inc - Ordinary Shares - Class C,4,USD,577.575,570.4625,9.52,28.45,2310.3,1.25
+DUK,Duke Energy Corp.,21,USD,117.51,118.99,-0.02,-31.08,2467.71,-1.24
+FRT,Federal Realty Investment Trust.,20,USD,110.41,110.49,-0.50,-1.60,2208.2,-0.07
+JNJ,Johnson & Johnson,9,USD,271.686,267.48,1.70,37.85,2445.174,1.57
+KO,Coca-Cola Co,28,USD,87.81,89.21,-0.44,-39.20,2458.68,-1.57
+L,Loews Corp.,23,USD,107.795,108.83,0.03,-23.81,2479.285,-0.95
+LIN,Linde Plc.,5,USD,458.31,464.69,-2.09,-31.90,2291.55,-1.37
+MPC,Marathon Petroleum Corp,4,USD,417.165,404.27,-7.73,51.58,1668.66,3.19
+MRNA,Moderna Inc,12,USD,168.86,157.65,14.82,134.52,2026.32,7.11
+O,Realty Income Corp.,42,USD,57.14,59.46,0.48,-97.44,2399.88,-3.90
+REG,Regency Centers Corporation,33,USD,73.11,74.68,0.16,-51.81,2412.63,-2.10
+SGOV,iShares Trust - iShares 0-3 Month Treasury Bond ETF,69,USD,100.595,100.53,0.01,4.49,6941.055,0.06
+SPY,SSgA Active Trust - SPDR S&P 500 ETF Trust,71,USD,770.59,762.07,8.90,604.92,54711.89,1.12
+TGT,Target Corp,12,USD,158.28,158.875,0.09,-7.14,1899.36,-0.37
+TLH,BlackRock Institutional Trust Company N.A. - iShares 10-20 Year Treasury Bond ETF,254,USD,95.695,95.26,0.54,110.49,24306.53,0.46
+USO,United States Commodity Funds LLC - United States Oil Fund,56,USD,148.49,155.46,-5.33,-390.32,8315.44,-4.48
+VCLT,"Vanguard Group, Inc. - Vanguard Long-Term Corporate Bond ETF",296,USD,71.49,70.89,0.30,177.60,21161.04,0.85
+VLO,Valero Energy Corp.,5,USD,406.624,395.626,-6.66,54.99,2033.12,2.78

@@ -1,0 +1,26 @@
+Symbol,Description,Quantity,Currency,LastPrice,PricePaid,DayChange,ProfitLoss,MarketValue,ProfitLossPercentage
+ATO,Atmos Energy Corp.,15,USD,163.98,164.01,0.79,-0.45,2459.7,-0.02
+BK,Bank Of New York Mellon Corp,6,USD,157.47,157.6,-5.19,-0.78,944.82,-0.08
+BRK/B,Berkshire Hathaway Inc. - Ordinary Shares - Class B,4,USD,515.1,514.87,4.73,0.92,2060.4,0.04
+CNC,Centene Corp.,14,USD,69.49,69.52,3.07,-0.42,972.86,-0.04
+DELL,Dell Technologies Inc - Ordinary Shares - Class C,1,USD,542.5466,545.3,-24.74,-2.75,542.5466,-0.50
+DUK,Duke Energy Corp.,21,USD,119.05,118.99,-0.37,1.26,2500.05,0.05
+EXPD,"Expeditors International Of Washington, Inc.",5,USD,193.13,193.37,0.53,-1.20,965.65,-0.12
+HPE,Hewlett Packard Enterprise Co,17,USD,56.265,56.74,-5.83,-8.08,956.505,-0.84
+JNJ,Johnson & Johnson,9,USD,267.265,267.48,1.69,-1.94,2405.385,-0.08
+KO,Coca-Cola Co,28,USD,89.205,89.21,0.92,-0.14,2497.74,-0.01
+L,Loews Corp.,23,USD,108.76,108.83,-0.03,-1.61,2501.48,-0.06
+LIN,Linde Plc.,5,USD,464.275,464.69,-1.95,-2.07,2321.375,-0.09
+MCD,McDonald`s Corp,9,USD,258.105,258.13,5.58,-0.22,2322.945,-0.01
+MPC,Marathon Petroleum Corp,2,USD,392.07,392.25,-3.86,-0.36,784.14,-0.05
+MRNA,Moderna Inc,6,USD,145.74,146.21,1.77,-2.82,874.44,-0.32
+O,Realty Income Corp.,42,USD,59.425,59.46,-0.08,-1.47,2495.85,-0.06
+REG,Regency Centers Corporation,33,USD,74.645,74.68,0.03,-1.16,2463.285,-0.05
+SGOV,iShares Trust - iShares 0-3 Month Treasury Bond ETF,69,USD,100.521,100.53,0.00,-0.62,6935.949,-0.01
+SPY,SSgA Active Trust - SPDR S&P 500 ETF Trust,71,USD,761.96,762.07,-2.33,-7.81,54099.16,-0.01
+STT,State Street Corp.,5,USD,188.145,188.44,-5.26,-1.48,940.725,-0.16
+TGT,Target Corp,6,USD,159.27,159.42,3.44,-0.90,955.62,-0.09
+TLH,BlackRock Institutional Trust Company N.A. - iShares 10-20 Year Treasury Bond ETF,254,USD,95.265,95.26,0.26,1.27,24197.31,0.01
+USO,United States Commodity Funds LLC - United States Oil Fund,56,USD,155.335,155.46,0.44,-7.00,8698.76,-0.08
+VCLT,"Vanguard Group, Inc. - Vanguard Long-Term Corporate Bond ETF",296,USD,70.88,70.89,0.23,-2.96,20980.48,-0.01
+VLO,Valero Energy Corp.,2,USD,378.83,379.24,-11.59,-0.82,757.66,-0.11
