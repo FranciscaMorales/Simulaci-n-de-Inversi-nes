@@ -136,6 +136,9 @@ for lab, serie in [("5 ETF (vigente: GLD, USO, DBA, SLV, CPER)", df.MOM_CMD), ("
                  "P(3 objetivos) histórico": mc_["P(3 objetivos)"], "Peso BL recalibrado commodities": PF.black_litterman(d_)["w"]["MOM_CMD"]})
 T["Sensibilidad_commodities"] = pd.DataFrame(sens)
 
+import analisis_complementario as AC
+T.update(AC.calcular({"df": df}))
+
 with pd.ExcelWriter(os.path.join(RESULTADOS, "resultados_modelo.xlsx")) as xw:
     for k, t in T.items(): t.to_excel(xw, sheet_name=k[:31], index=k == "Covarianza_anual")
 pd.to_pickle({"T": T, "df": df, "bl": bl, "mk": mk, "bench": bench, "bser": bser, "port": port, "agf": agf, "fac": fac}, os.path.join(RESULTADOS, "estado.pkl"))

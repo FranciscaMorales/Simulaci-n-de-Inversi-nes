@@ -127,8 +127,11 @@ TB(["Métrica (2016-2026, USD)", "Nexum", "Benchmark", "AGF 85/15", "S&P 500"],
    [[k] + [(p_(m16(s, k)) if k not in ("Sharpe", "Sortino", "Beta", "Information ratio") else n_(m16(s, k))) for s in ["Cartera Nexum", "Benchmark de política", "Cartera actual AGF 85/15", "S&P 500 (SPY)"]]
     for k in ["CAGR", "Volatilidad", "Sharpe", "Sortino", "Beta", "Máx. caída", "VaR 95% mensual", "CVaR 95% mensual", "Tracking error", "Information ratio"]], w=[5, 2.7, 2.7, 2.7, 2.7])
 P(f"Retorno esperado vs requerido: el retorno histórico real 2013-2026 fue {p_(g('Nexum','Hist','USD','Retorno real anual'))}, muy sobre el requerido. Con supuestos prospectivos (tasa real ~2,5% más primas moderadas; sección 4.3) el retorno real esperado es {p_(g('Nexum','Prosp','USD','Retorno real anual'))}, igual al requerido de {p_(fac['TIR requerida'],2)}. Nivel de riesgo aceptable: volatilidad anual de 10-12%, máxima caída tolerada de 25% y probabilidad de Educación de al menos 90%.")
-FIGURA("f1_crecimiento.png", "Figura 3. Crecimiento de USD 100 (2016-2026). Fuente: resultados/retornos_cartera_benchmark.csv.")
-FIGURA("f2_caidas.png", "Figura 4. Caídas desde el máximo: Nexum frente a la cartera actual de la AGF.")
+rcd = T["Contribucion_riesgo"]
+FIGURA("f8_riesgo.png", "Figura 3. Peso de cada activo frente a su contribución al riesgo total (pesos aprobados, covarianza 2013-2026). Fuente: hoja 06 del modelo.")
+P(f"Contribución al riesgo: el S&P 500 pesa {p_(rcd.iloc[0]['Peso'])} pero aporta {p_(rcd.iloc[0]['Contribución al riesgo (%)'])} del riesgo; Momentum pesa {p_(rcd.iloc[4]['Peso'])} y aporta {p_(rcd.iloc[4]['Contribución al riesgo (%)'])}. Los bonos del Tesoro diversifican: con {p_(rcd.iloc[1]['Peso'])} del capital aportan solo {p_(rcd.iloc[1]['Contribución al riesgo (%)'])}. El presupuesto de riesgo está dominado por la renta variable, coherente con un perfil moderado-agresivo que necesita prima por riesgo para cumplir sus objetivos.")
+FIGURA("f1_crecimiento.png", "Figura 4. Crecimiento de USD 100 (2016-2026). Fuente: resultados/retornos_cartera_benchmark.csv.")
+FIGURA("f2_caidas.png", "Figura 5. Caídas desde el máximo: Nexum frente a la cartera actual de la AGF.")
 H("2.8 Selección, seguimiento y rebalanceo", 2)
 TB(["Elemento", "Regla"], [
     ["Selección", "Núcleo: ETF líquidos de bajo costo. Satélite: acciones del S&P 500 (precio ≥ USD 5, liquidez ≥ USD 5 millones/día) y 5 ETF de commodities"],
@@ -199,20 +202,30 @@ B(["Acciones del S&P 500 con membresía histórica point-in-time (2009-2026): si
    "Señal con información disponible al cierre del mes t; retorno desde t+1 (sin anticipación). Costo de 0,1% sobre la rotación.",
    "Montecarlo: 20.000 escenarios de 50 años por bootstrap mensual; inflación de EE.UU. de 2%; capital invertido de USD 144.000 (neto de la reserva de 4%)."])
 H("4.2 Montecarlo: probabilidad de cumplir los objetivos", 2)
-FIGURA("f4_montecarlo.png", "Figura 5. Probabilidad de cumplir cada objetivo. Fuente: codigo/montecarlo.py; hoja 08_Montecarlo.")
+FIGURA("f4_montecarlo.png", "Figura 6. Probabilidad de cumplir cada objetivo. Fuente: codigo/montecarlo.py; hoja 08_Montecarlo.")
 TB(["Cartera", "Escenario", "Moneda", "Retorno real", "P(Educación)", "P(Villarrica)", "P(Herencia)", "P(3 objetivos)"],
    [[r.Cartera, r.Escenario, r.Moneda, p_(r["Retorno real anual"]), p_(r["P(Educación)"]), p_(r["P(Villarrica)"]), p_(r["P(Herencia)"]), p_(r["P(3 objetivos)"])] for _, r in mc.iterrows()],
    w=[2, 3.2, 1.4, 1.7, 1.9, 1.9, 1.9, 2], sz=8,
    nota="Escenario prospectivo: misma volatilidad y correlaciones históricas, con medias ajustadas a supuestos de mercado (retornos reales: S&P 500 5,0%, Low-Vol 4,5%, Momentum 5,5%, TLH 2,6%, VCLT 3,2%, commodities 2,0%). UF: tipo de cambio real sin tendencia, con la volatilidad y la correlación observadas.")
 P("Interpretación: Educación se cumple en prácticamente todos los escenarios, por lo que el piso de diseño (90-95%) se satisface con holgura. La incertidumbre se concentra en Villarrica y la herencia, que el IPS define como flexibles. Con retornos históricos el plan es holgado; con supuestos prudentes la probabilidad conjunta es menor a 50%, coherente con un retorno esperado que apenas iguala al requerido. Esta es la conclusión que se presenta a los clientes, junto con las palancas de ajuste:")
 TB(["Palanca (escenario prospectivo, USD)", "P(Educación)", "P(Villarrica)", "P(Herencia)", "P(3 objetivos)"], [[k] + [p_(v) for v in r.values] for k, r in pal.iterrows()], w=[6.4, 2.4, 2.4, 2.4, 2.4])
+FIGURA("f7_abanico.png", "Figura 7. Abanico del patrimonio real (percentiles 10-90). Escalas distintas en cada panel. La caída del año 25 es la compra de Villarrica.")
+abp = T["Abanico_prospectivo"].set_index("Año")
+P(f"Distribución del patrimonio (prospectivo, USD de hoy): al iniciar Educación (año 14) la mediana es {u_(abp.loc[14,'P50'])} y el 10% peor {u_(abp.loc[14,'P10'])}, muy por sobre los ~USD 143.000 que cuesta Educación completa; antes de Villarrica (año 25) la mediana es {u_(abp.loc[25,'P50'])} frente a un desembolso de ~USD 470.000; al año 50 la mediana es {u_(abp.loc[50,'P50'])}, bajo la meta de herencia de USD 500.000. Es la misma conclusión de la TIR: Educación está holgada, Villarrica es ajustada y la herencia es la variable de ajuste.")
+H("Capital humano: desempleo de Tomás", 3)
+de = T["Desempleo"]; dv = lambda e, m, k: de[(de["Escenario de empleo"].str.startswith(e)) & (de.Mercado == m)][k].iloc[0]
+TB(["Escenario de empleo", "Mercado", "P(Educación)", "P(Villarrica)", "P(Herencia)", "P(3 objetivos)"],
+   [[r["Escenario de empleo"], r["Mercado"], p_(r["P(Educación)"]), p_(r["P(Villarrica)"]), p_(r["P(Herencia)"]), p_(r["P(3 objetivos)"])] for _, r in de.iterrows()],
+   w=[6.6, 2, 1.8, 1.9, 1.8, 1.9], sz=7.5,
+   nota="El empleo de Tomás (software) se comporta como una acción tecnológica: la probabilidad de perderlo sube cuando la cartera cae. Mientras está desempleado no aporta; se reemplea con 50% anual (~2 años en promedio). El escenario de estrés supone pérdida permanente.")
+P(f"Lectura: Educación resiste incluso la pérdida permanente del empleo ({p_(dv('Estrés','Prospectivo','P(Educación)'))} en el escenario prospectivo). El riesgo de capital humano recae sobre Villarrica y la herencia: con desempleo correlacionado con el mercado, la probabilidad conjunta histórica baja de {p_(dv('Sin','Histórico','P(3 objetivos)'))} a {p_(dv('10%','Histórico','P(3 objetivos)'))}. Mitigantes: fondo de emergencia fuera del mandato, seguro de vida e invalidez, y el límite a tecnología en la cartera para no duplicar la exposición del ingreso de Tomás.")
 H("4.3 Validación del modelo", 2)
 P("Correcciones respecto de la versión anterior del modelo. La auditoría encontró tres problemas que afectaban los resultados; esta versión los corrige y mide su efecto:")
 TB(["Versión", "Meses", "Momentum", "Low-Vol", "Commod.", "Cartera CAGR", "Sharpe", "BL SPY", "BL LV"],
    [[r["Versión"][:52], int(r["Meses"]), p_(r["CAGR Momentum"]), p_(r["CAGR Low-Vol"]), p_(r["CAGR Commodities"]), p_(r["Cartera (pesos aprobados) CAGR"]), n_(r["Cartera Sharpe"]), p_(r["BL SPY"]), p_(r["BL LOW_VOL"])] for _, r in ic.iterrows()],
    w=[5.6, 1.1, 1.5, 1.4, 1.4, 1.6, 1.2, 1.3, 1.3], sz=7.5,
    nota="(1) Low-Vol devolvía datos vacíos en jul-2018 y dic-2018 y el modelo eliminaba esos meses de las 6 series, incluido el peor mes del período para las acciones. (2) El filtro de Sharpe de Momentum usaba la volatilidad de un mes en el backtest y de 12 meses en la operación. (3) Sensibilidad: contar el costo en compras y ventas. Ninguna corrección mueve los pesos más de 0,7 puntos.")
-FIGURA("f6_robustez.png", "Figura 6. Robustez: Sharpe 2013-2026 de cada variante de parámetros (un cambio a la vez). Fuente: codigo/validacion.py.")
+FIGURA("f6_robustez.png", "Figura 8. Robustez: Sharpe 2013-2026 de cada variante de parámetros (un cambio a la vez). Fuente: codigo/validacion.py.")
 P(f"Robustez. Momentum y Low-Volatility son estables frente a sus parámetros (Sharpe entre {n_(rb[rb.Estrategia!='Commodities'].Sharpe.min())} y {n_(rb[rb.Estrategia!='Commodities'].Sharpe.max())}) y la regla vigente no es la mejor variante, lo que es evidencia en contra de sobreajuste. Momentum en commodities sí depende de sus umbrales y de la ampliación del universo de 3 a 5 ETF, que se decidió observando el backtest: se declara como sesgo de selección y explica su menor peso.")
 sc = T["Sensibilidad_commodities"]
 TB(["Universo de commodities", "Cartera: retorno anual", "Sharpe", "Máx. caída", "P(3 objetivos) histórico"],

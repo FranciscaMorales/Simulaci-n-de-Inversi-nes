@@ -239,6 +239,14 @@ put(ws, "B43", "Núcleo pasivo (SPY+TLH+VCLT)"); put(ws, "C43", "=SUM(H6:H8)", F
 put(ws, "B44", "Chequeo: Σ pesos = 100%"); put(ws, "C44", "=IF(ABS(SUM(H6:H11)-1)<0.0005,\"OK\",\"REVISAR\")", F_FX)
 put(ws, "B46", "Lectura: los pesos recalibrados con los datos corregidos difieren en menos de 0,7 pp de los aprobados (dentro de la banda de rebalanceo de ±2 pp): se mantienen los pesos aprobados, que ya están implementados.", F_S)
 av = T["Aversion_riesgo"]; put(ws, "B48", "Aversión al riesgo", F_SEC); tabla(ws, 49, 2, av, {"Valor": NUM})
+put(ws, "B54", "Contribución al riesgo (pesos aprobados): w_i·(Σw)_i / w'Σw", F_SEC)
+ws["B55"] = "Activo"; ws["C55"] = "Peso"; ws["D55"] = "Contribución marginal (Σw)_i"; ws["E55"] = "Contribución al riesgo (%)"
+for c in "BCDE": ws[f"{c}55"].font = F_H; ws[f"{c}55"].fill = HDR
+ws["D56"] = ArrayFormula("D56:D61", "=MMULT('05_Markowitz'!C15:H20,'05_Markowitz'!F6:F11)")
+for k, a in enumerate(ACTIVOS):
+    r = 56 + k; put(ws, f"B{r}", NOMBRES[a]); put(ws, f"C{r}", f"='05_Markowitz'!F{6 + k}", F_LK, PCT)
+    ws[f"D{r}"].number_format = "0.00000"; ws[f"D{r}"].border = BOX; put(ws, f"E{r}", f"=C{r}*D{r}/SUMPRODUCT($C$56:$C$61,$D$56:$D$61)", F_FX, PCT1)
+put(ws, "B62", "Total"); put(ws, "E62", "=SUM(E56:E61)", F_FX, PCT1)
 anchos(ws, {"B": 40, **{L(i): 15 for i in range(3, 12)}, "K": 50})
 
 # ======================= 7. BENCHMARK Y MÉTRICAS =======================
@@ -257,6 +265,12 @@ ws = hoja("08_Montecarlo", "Montecarlo: probabilidad de cumplir los objetivos (2
           "Bootstrap mensual. Prospectivo: misma volatilidad y correlaciones, medias ajustadas a supuestos de mercado. UF: tipo de cambio real sin tendencia, con su volatilidad y correlación histórica.")
 mcv = T["Montecarlo"]; tabla(ws, 5, 2, mcv, {c: (USD0 if "Saldo" in c else PCT1) for c in mcv.columns})
 put(ws, "B16", "Palancas acordables con el cliente (escenario prospectivo, USD)", F_SEC); tabla(ws, 17, 2, T["Palancas"], {c: PCT1 for c in T["Palancas"].columns})
+put(ws, "B24", "Capital humano: desempleo de Tomás (los aportes se cortan mientras está desempleado)", F_SEC)
+tabla(ws, 25, 2, T["Desempleo"], {c: PCT1 for c in T["Desempleo"].columns})
+put(ws, "B38", "Abanico del patrimonio real (USD de hoy) — percentiles al cierre de cada año", F_SEC)
+for k, (lab, col) in enumerate([("Histórico", "Abanico_historico"), ("Prospectivo", "Abanico_prospectivo")]):
+    a = T[col][["Año", "P10", "P25", "P50", "P75", "P90"]]; c0 = 2 + k * 8
+    ws.cell(row=39, column=c0, value=lab).font = F_B; tabla(ws, 40, c0, a, {"Año": "0", **{c: USD0 for c in ["P10", "P25", "P50", "P75", "P90"]}})
 anchos(ws, {"B": 14, "C": 22, "D": 9, **{L(i): 13 for i in range(5, 20)}})
 
 # ======================= 9. VALIDACIÓN =======================

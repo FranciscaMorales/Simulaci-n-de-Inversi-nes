@@ -70,3 +70,31 @@ for ax, est in zip(axs, ["Momentum", "Low-Volatility", "Commodities"]):
     ax.set_title(est, fontsize=9, color=INK); ax.set_xlabel("Sharpe 2013-2026", fontsize=7.5)
 fig.suptitle("Robustez: Sharpe de cada variante (naranja = regla vigente)", x=0.01, ha="left", fontsize=10, color=INK); save(fig, "f6_robustez.png")
 print("figuras OK:", sorted(os.listdir(OUT)))
+
+# 7. Abanico del patrimonio real (USD de hoy)
+fig, axs = plt.subplots(1, 2, figsize=(7.4, 3.3), sharey=False)
+for ax, (k, tit) in zip(axs, [("Abanico_historico", "Retornos históricos 2013-2026"), ("Abanico_prospectivo", "Supuestos prospectivos")]):
+    a = T[k]; y = a["Año"]
+    ax.fill_between(y, a.P10 / 1e3, a.P90 / 1e3, color=C[0], alpha=0.15, lw=0, label="P10-P90")
+    ax.fill_between(y, a.P25 / 1e3, a.P75 / 1e3, color=C[0], alpha=0.30, lw=0, label="P25-P75")
+    ax.plot(y, a.P50 / 1e3, color=C[0], lw=2, label="Mediana")
+    for x0, x1 in [(14, 20)]: ax.axvspan(x0, x1, color=GRID, alpha=0.6, lw=0)
+    for x, t, hy in [(17, "Educación", 0.97), (25, "Villarrica", 0.89), (48.5, "Herencia", 0.97)]:
+        if t != "Educación": ax.axvline(25 if t == "Villarrica" else 50, color=INK2, lw=0.6, ls=":")
+        ax.annotate(t, (x, hy), xycoords=("data", "axes fraction"), ha="center", fontsize=7, color=INK2)
+    ax.set_ylim(0, a.P90.max() / 1e3 * 1.12)
+    ax.set_title(tit, fontsize=9, color=INK); ax.set_xlabel("Año")
+axs[0].set_ylabel("Patrimonio (miles de USD de hoy)"); axs[1].legend(loc="upper left", fontsize=7, bbox_to_anchor=(0.0, 0.86))
+fig.suptitle("Abanico del patrimonio de la cartera (20.000 escenarios)", x=0.01, ha="left", fontsize=10, color=INK); save(fig, "f7_abanico.png")
+
+# 8. Peso vs contribución al riesgo
+rc = T["Contribucion_riesgo"]; y = np.arange(len(rc)); h = 0.36
+fig, ax = plt.subplots(figsize=(7.2, 3.0))
+ax.barh(y - h / 2, rc["Peso"] * 100, height=h - 0.04, color=C[0], label="Peso en la cartera")
+ax.barh(y + h / 2, rc["Contribución al riesgo (%)"] * 100, height=h - 0.04, color=C[1], label="Contribución al riesgo")
+for i, (p, r) in enumerate(zip(rc["Peso"], rc["Contribución al riesgo (%)"])):
+    ax.annotate(f"{p*100:.1f}%", (p * 100, i - h / 2), xytext=(3, 0), textcoords="offset points", va="center", fontsize=7, color=INK)
+    ax.annotate(f"{r*100:.1f}%", (r * 100, i + h / 2), xytext=(3, 0), textcoords="offset points", va="center", fontsize=7, color=INK)
+ax.set_yticks(y); ax.set_yticklabels([n.replace(" (", "\n(") for n in rc["Activo"]], fontsize=7.5); ax.invert_yaxis(); ax.set_xlabel("%")
+ax.legend(loc="lower right"); ax.set_title("Peso frente a contribución al riesgo total de la cartera", loc="left", color=INK, fontsize=10); save(fig, "f8_riesgo.png")
+print("figuras 7 y 8 OK")

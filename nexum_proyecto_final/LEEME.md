@@ -21,6 +21,7 @@ Grupo 11 · ESF 2026-2. Proyecto reconstruido desde cero a partir de la auditor�
 | `objetivos.py` | Flujos, TIR requerida, factibilidad, plan de desembolsos |
 | `montecarlo.py` | Montecarlo en USD y UF, histórico y prospectivo |
 | `validacion.py` | Robustez de parámetros y walk-forward |
+| `analisis_complementario.py` | Contribución al riesgo, Montecarlo con desempleo de Tomás y abanico del patrimonio (rescatados del trabajo de Francisca y recalculados con el modelo oficial) |
 | `run_all.py` | Corre todo y guarda `resultados/` (≈10 min; la robustez queda en caché) |
 | `excel_modelo.py`, `figuras.py`, `informe.py` | Generan el Excel, los gráficos y el informe |
 | `senales.py` | Señales de operación con precios del día (uso semanal/mensual) |
