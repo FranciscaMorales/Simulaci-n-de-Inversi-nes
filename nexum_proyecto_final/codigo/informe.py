@@ -214,6 +214,11 @@ TB(["Versión", "Meses", "Momentum", "Low-Vol", "Commod.", "Cartera CAGR", "Shar
    nota="(1) Low-Vol devolvía datos vacíos en jul-2018 y dic-2018 y el modelo eliminaba esos meses de las 6 series, incluido el peor mes del período para las acciones. (2) El filtro de Sharpe de Momentum usaba la volatilidad de un mes en el backtest y de 12 meses en la operación. (3) Sensibilidad: contar el costo en compras y ventas. Ninguna corrección mueve los pesos más de 0,7 puntos.")
 FIGURA("f6_robustez.png", "Figura 6. Robustez: Sharpe 2013-2026 de cada variante de parámetros (un cambio a la vez). Fuente: codigo/validacion.py.")
 P(f"Robustez. Momentum y Low-Volatility son estables frente a sus parámetros (Sharpe entre {n_(rb[rb.Estrategia!='Commodities'].Sharpe.min())} y {n_(rb[rb.Estrategia!='Commodities'].Sharpe.max())}) y la regla vigente no es la mejor variante, lo que es evidencia en contra de sobreajuste. Momentum en commodities sí depende de sus umbrales y de la ampliación del universo de 3 a 5 ETF, que se decidió observando el backtest: se declara como sesgo de selección y explica su menor peso.")
+sc = T["Sensibilidad_commodities"]
+TB(["Universo de commodities", "Cartera: retorno anual", "Sharpe", "Máx. caída", "P(3 objetivos) histórico"],
+   [[r["Universo"], p_(r["Cartera CAGR"], 2), n_(r["Cartera Sharpe"], 3), p_(r["Cartera máx. caída"]), p_(r["P(3 objetivos) histórico"])] for _, r in sc.iterrows()],
+   w=[6.2, 2.6, 1.8, 2.3, 3.1],
+   nota="Control del sesgo de selección: con el universo original de 3 ETF la cartera rinde 0,25 puntos menos al año y la probabilidad de cumplir los tres objetivos baja ~1 punto. La conclusión del IPS no depende de esa decisión.")
 TB(["Cartera", "Sharpe 2013-2019 (dentro de muestra)", "Sharpe 2020-2026 (fuera de muestra)"],
    [[c, n_(wfv(c, "Dentro")), n_(wfv(c, "Fuera"))] for c in wf.Cartera.unique()], w=[7.4, 4.3, 4.3],
    nota="Walk-forward: los pesos se calibran solo con 2013-2019 y se evalúan en 2020-2026. Markowitz con medias históricas sobreajusta; Black-Litterman calibrado con la misma información mantiene el mejor desempeño fuera de muestra, lo que respalda su uso.")
@@ -229,7 +234,13 @@ P("La cartera se implementó el 14-sep-2026 con los pesos aprobados. Decisiones 
 B([("Rebalanceo de fin de septiembre: ", "Momentum se llevó a peso igual; Moderna se redujo de 12 a 5 acciones, asegurando ~USD 225 de ganancia, con un stop móvil sobre el costo para las restantes."),
    ("Low-Volatility: ", "se redujo utilities y real estate de 50% a ~29% del sleeve (salieron Realty Income y Duke Energy), por la sensibilidad a tasas observada; entraron PG, RSG y SNA siguiendo el ranking."),
    ("Petróleo: ", "se vendieron MPC, VLO y USO para reducir la exposición conjunta al petróleo; la señal de octubre confirmó la salida de USO."),
-   ("Operaciones: ", "~50 en las primeras tres semanas, en línea con la regla de 150 en 12 semanas.")])
+   ("Operaciones: ", "~50 en las primeras tres semanas, en línea con la regla de 150 en 12 semanas. Las comisiones de la plataforma (~USD 10 por operación, ~USD 1.500 por las 150 exigidas) se tratan como costo operativo de la simulación y no entran en Black-Litterman ni en el Montecarlo.")])
+P("Desviaciones respecto de la regla, documentadas:", b=None)
+TB(["Fecha", "Sleeve", "Desviación", "Motivo / tratamiento"], [
+    ["14-sep", "Commodities", "Compra de USO aunque al 31-ago ningún commodity calificaba", "La señal se recalculó con precios del 14-sep (día de la implementación). Se vendió el 2-oct; la señal de octubre confirmó su salida"],
+    ["21-sep", "Low-Volatility", "Se reemplazaron BRK/B y MCD por AFL y FRT", "FRT entraba a la selección de la revisión del 18-sep (en lugar de O). AFL y las salidas de BRK/B y MCD no corresponden a la regla: desviación discrecional, se corrige en el rebalanceo de fin de octubre"],
+    ["30-sep", "Low-Volatility", "Salen O y DUK; entran PG, RSG y SNA; se excluye MCD", "Reducir utilities y REITs (sensibles a tasas) de 50% a ~29% del sleeve; MCD excluida por deterioro de tendencia. Reemplazos en orden del ranking"],
+    ["2-oct", "Momentum / Commodities", "Venta de MPC, VLO y USO", "Reducir la exposición conjunta al petróleo; MPC y VLO seguían en la señal (decisión de riesgo)"]], w=[1.5, 2.6, 5.4, 6.5], sz=7.5)
 P("Momentum es el sleeve con mejor desempeño en vivo (≈ +3,7% desde el 14-sep frente a ≈ +2,4% de QMOM). La cartera total se ve afectada por la subida de la tasa a 10 años a 5,3%, que golpea al núcleo de renta fija larga (~30% de la cartera). Es el principal riesgo de corto plazo y está identificado en la sección 6.", it=False)
 
 # ================= 6. RIESGOS =================
@@ -282,7 +293,22 @@ TB(["Gravedad", "Hallazgo", "Corrección"], [
     ["Media", "Benchmarks distintos entre hojas", "Un benchmark invertible por sleeve"],
     ["Media", "Universo de commodities ampliado mirando el backtest", "Declarado y controlado"],
     ["Baja", "Métricas de la misma estrategia con distintas convenciones", "Una convención: exceso sobre T-Bills"]], w=[1.8, 8.4, 5.8])
-H("Anexo B. Reproducibilidad")
+H("Anexo B. Preguntas anticipadas para la defensa")
+for q, a in [
+ ("¿Por qué ampliaron el universo de commodities de 3 a 5 ETF después de ver el backtest?",
+  f"Para diversificar entre complejos de commodities: metales preciosos, energía y agrícolas, más metales industriales (plata y cobre). Reconocemos que la elección de SLV y CPER se hizo después de ver el backtest; por eso lo declaramos como sesgo de selección y lo controlamos. Con el universo original de 3 ETF la cartera rinde 0,25 puntos menos al año, el Sharpe baja de {n_(sc.iloc[0]['Cartera Sharpe'])} a {n_(sc.iloc[1]['Cartera Sharpe'])} y la probabilidad de los tres objetivos de {p_(sc.iloc[0]['P(3 objetivos) histórico'])} a {p_(sc.iloc[1]['P(3 objetivos) histórico'])}. La conclusión no depende de esa decisión, y es el sleeve con menor peso (6,1%) justamente por ser el más frágil."),
+ ("¿Por qué Villarrica tiene prioridad sobre la herencia, si la herencia es el monto mayor?",
+  "Porque la herencia no tiene fecha rígida y es un objetivo de riqueza terminal a 50 años: por diseño absorbe la variabilidad de los resultados. Villarrica tiene fecha (la jubilación) y compromete además UF 15.000 de la venta de la casa. Es el orden del enunciado y fue validado con el criterio de flexibilidad. Las palancas siguen ese mismo orden: primero se ajusta la herencia, luego Villarrica, nunca Educación."),
+ ("¿Por qué la probabilidad de cumplir los tres objetivos es solo 46,5% en el escenario prospectivo?",
+  "Porque con supuestos prudentes el retorno real esperado (~4,6%) apenas iguala al requerido (4,56%). Lo presentamos con transparencia en vez de mostrar solo el 96% histórico. Educación está asegurada en todos los escenarios; para Villarrica y la herencia se acordaron palancas que elevan la probabilidad a ~75%."),
+ ("¿Por qué USD como moneda funcional si las necesidades del cliente están en UF y CLP?",
+  "Todo el universo de inversión cotiza en USD y cubrir el tipo de cambio requiere derivados que el perfil excluye. El peso se deprecia cuando caen los mercados (cobertura natural) y el ahorro en USD diversifica el riesgo país de una familia cuyo capital humano y vivienda están en Chile. Las simulaciones se presentan también en UF."),
+ ("¿Por qué no usan Markowitz si tiene mayor Sharpe?",
+  "Porque ese Sharpe es dentro de muestra. En la prueba fuera de muestra (calibrar con 2013-2019 y evaluar 2020-2026), Markowitz cae a 0,45, mientras que Black-Litterman calibrado con la misma información logra 0,65."),
+ ("¿El modelo que presentan es el mismo que operan en StockTrak?",
+  "Sí. Los pesos implementados son los de Black-Litterman y las reglas de las estrategias son las mismas del backtest. Las desviaciones discrecionales están documentadas en la sección 5 con fecha y motivo.")]:
+    P(a, b=q + " ")
+H("Anexo C. Reproducibilidad")
 B(["codigo/config.py: todos los parámetros. codigo/estrategias.py: backtests. codigo/portafolio.py: Markowitz, Black-Litterman, benchmark y métricas.",
    "codigo/objetivos.py: flujos y TIR. codigo/montecarlo.py: simulación. codigo/validacion.py: robustez y walk-forward.",
    "codigo/run_all.py corre todo; codigo/excel_modelo.py genera el Excel; codigo/figuras.py e informe.py, este documento; codigo/senales.py, las señales de operación.",

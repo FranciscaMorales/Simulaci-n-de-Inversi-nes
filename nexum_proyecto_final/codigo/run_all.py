@@ -125,6 +125,17 @@ log("9. Validación")
 rob_f = os.path.join(RESULTADOS, "robustez.csv")
 T["Robustez"] = pd.read_csv(rob_f) if os.path.exists(rob_f) else V.robustez(); T["Robustez"].to_csv(rob_f, index=False); T["Walk_forward"] = V.walk_forward(df, bil)
 
+
+# 10. Sensibilidad al universo de commodities (control del sesgo de selección)
+c3 = E.momentum_commodities(universo=CMD["universo_original"])["retorno"]
+sens = []
+for lab, serie in [("5 ETF (vigente: GLD, USO, DBA, SLV, CPER)", df.MOM_CMD), ("3 ETF (original: GLD, USO, DBA)", c3.reindex(df.index))]:
+    d_ = df.copy(); d_["MOM_CMD"] = serie; p_ = (d_ * W).sum(axis=1); m_ = PF.metricas(p_, bil, d_.SPY)
+    mc_ = MC.simular(sum(W[a] * MC.deflactar(d_[a]) for a in ACTIVOS))
+    sens.append({"Universo": lab, "Cartera CAGR": m_["CAGR"], "Cartera Sharpe": m_["Sharpe"], "Cartera máx. caída": m_["Máx. caída"],
+                 "P(3 objetivos) histórico": mc_["P(3 objetivos)"], "Peso BL recalibrado commodities": PF.black_litterman(d_)["w"]["MOM_CMD"]})
+T["Sensibilidad_commodities"] = pd.DataFrame(sens)
+
 with pd.ExcelWriter(os.path.join(RESULTADOS, "resultados_modelo.xlsx")) as xw:
     for k, t in T.items(): t.to_excel(xw, sheet_name=k[:31], index=k == "Covarianza_anual")
 pd.to_pickle({"T": T, "df": df, "bl": bl, "mk": mk, "bench": bench, "bser": bser, "port": port, "agf": agf, "fac": fac}, os.path.join(RESULTADOS, "estado.pkl"))

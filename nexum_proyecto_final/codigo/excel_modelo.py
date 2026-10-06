@@ -267,7 +267,9 @@ put(ws, "B12", "Robustez de parámetros (un cambio a la vez; backtest completo)"
 rb = T["Robustez"]; tabla(ws, 13, 2, rb, {c: (NUM if "Sharpe" in c else PCT) for c in rb.columns})
 r = 14 + len(rb) + 1; put(ws, f"B{r}", "Walk-forward: calibrar con 2013-2019, evaluar 2020-2026", F_SEC)
 wf = T["Walk_forward"]; tabla(ws, r + 1, 2, wf, {c: (NUM if c == "Sharpe" else PCT) for c in wf.columns})
-r = r + len(wf) + 3; put(ws, f"B{r}", "Sesgos y limitaciones declarados", F_SEC)
+r = r + len(wf) + 3; put(ws, f"B{r}", "Sensibilidad al universo de commodities (control del sesgo de selección)", F_SEC)
+sc = T["Sensibilidad_commodities"]; tabla(ws, r + 1, 2, sc, {c: (NUM if "Sharpe" in c else PCT) for c in sc.columns})
+r = r + len(sc) + 3; put(ws, f"B{r}", "Sesgos y limitaciones declarados", F_SEC)
 ses = ["Supervivencia: controlado con membresía histórica del S&P 500 (point-in-time).",
        "Anticipación: señal al cierre de t, retorno desde t+1. Limitación: clasificación GICS actual (no histórica) en el límite sectorial; afecta sobre todo antes de 2016 y a ~3% de posiciones sin clasificar.",
        "Datos faltantes: un precio faltante en el mes se trata como 0% en esa posición (antes eliminaba el mes completo en Low-Vol).",
