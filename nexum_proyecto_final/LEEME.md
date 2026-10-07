@@ -25,8 +25,9 @@ Grupo 11 · ESF 2026-2. Proyecto reconstruido desde cero a partir de la auditor�
 | `run_all.py` | Corre todo y guarda `resultados/` (≈10 min; la robustez queda en caché) |
 | `excel_modelo.py`, `figuras.py`, `informe.py` | Generan el Excel, los gráficos y el informe |
 | `senales.py` | Señales de operación con precios del día (uso semanal/mensual) |
+| `analisis_adicional.py` | Benchmark por clase de activo, resultado en vivo por clase (exports de StockTrak del 6-oct en `datos/`), forward USD/CLP, bandas de rebalanceo, regla de commodities y activos adicionales → `resultados/analisis_adicional.xlsx` (correr después de `run_all.py`; `--desfase` agrega el control de calendario del backtest) |
 
-Orden: `python3 run_all.py && python3 excel_modelo.py && python3 figuras.py && python3 informe.py`.
+Orden: `python3 run_all.py && python3 analisis_adicional.py && python3 excel_modelo.py && python3 figuras.py && python3 informe.py`.
 El Excel debe abrirse y guardarse en Microsoft Excel una vez para que queden visibles los valores de las fórmulas.
 
 ## Correcciones respecto del modelo anterior

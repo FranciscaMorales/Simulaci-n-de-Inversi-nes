@@ -1,0 +1,22 @@
+Symbol,Description,Quantity,Currency,LastPrice,PricePaid,DayChange,ProfitLoss,MarketValue,ProfitLossPercentage
+AFL,Aflac Inc.,18,USD,113.63,115.78,1.25,-38.70,2045.34,-1.86
+ATO,Atmos Energy Corp.,15,USD,159.74,164.01,1.69,-64.05,2396.1,-2.60
+CPAY,Corpay Inc.,3,USD,406.79,406.42,5.07,1.11,1220.37,0.09
+CPER,United States Commodity Funds LLC - United States Copper Index Fund,100,USD,40.03,40.94,0.17,-91.00,4003,-2.22
+DELL,Dell Technologies Inc - Ordinary Shares - Class C,2,USD,574,570.4625,21.71,7.07,1148,0.62
+FRT,Federal Realty Investment Trust.,20,USD,106.2,110.49,0.23,-85.80,2124,-3.88
+HUM,Humana Inc.,3,USD,404.27,406.16,0.20,-5.67,1212.81,-0.47
+JNJ,Johnson & Johnson,9,USD,254.78,267.48,1.85,-114.30,2293.02,-4.75
+KO,Coca-Cola Co,28,USD,86.17,89.21,-0.34,-85.12,2412.76,-3.41
+L,Loews Corp.,23,USD,106.46,108.83,0.79,-54.51,2448.58,-2.18
+LIN,Linde Plc.,5,USD,489.95,464.69,7.57,126.30,2449.75,5.44
+MRNA,Moderna Inc,5,USD,187.46,157.65,-15.75,149.05,937.3,18.91
+NUE,Nucor Corp.,5,USD,251.07,239.57,-0.34,57.50,1255.35,4.80
+PG,Procter & Gamble Co.,12,USD,148.41,148.34,2.47,0.84,1780.92,0.05
+REG,Regency Centers Corporation,33,USD,71.42,74.68,0.09,-107.58,2356.86,-4.37
+RSG,"Republic Services, Inc.",9,USD,214.74,211.4,1.91,30.06,1932.66,1.58
+SGOV,iShares Trust - iShares 0-3 Month Treasury Bond ETF,69,USD,100.46,100.53,0.01,-4.83,6931.74,-0.07
+SNA,"Snap-on, Inc.",5,USD,368.61,368.32,1.21,1.45,1843.05,0.08
+SPY,SSgA Active Trust - SPDR S&P 500 ETF Trust,71,USD,779.09,762.07,4.26,"1,208.42",55315.39,2.23
+TLH,BlackRock Institutional Trust Company N.A. - iShares 10-20 Year Treasury Bond ETF,254,USD,91.56,95.26,0.22,-939.80,23256.24,-3.88
+VCLT,"Vanguard Group, Inc. - Vanguard Long-Term Corporate Bond ETF",296,USD,68.39,70.89,0.26,-740.00,20243.44,-3.53

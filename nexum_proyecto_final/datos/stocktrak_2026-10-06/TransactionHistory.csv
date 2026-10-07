@@ -1,0 +1,65 @@
+Symbol,TransactionType,CompanyName,Exchange,Quantity,FXRate,Currency,SecurityType,Price,Amount,CreateDate
+HUM,Market - Buy,Humana Inc.,US,3,1.00,USD,Equities,$406.1600,"-$1,218.4800",10/06/2026 - 15:58
+CPAY,Market - Buy,Corpay Inc.,US,3,1.00,USD,Equities,$406.4200,"-$1,219.2600",10/06/2026 - 15:55
+TGT,Market - Sell,Target Corp,US,-12,1.00,USD,Equities,$154.1800,"$1,850.1600",10/06/2026 - 15:43
+DELL,Market - Sell,Dell Technologies Inc - Ordinary Shares - Class C,US,-2,1.00,USD,Equities,$574.2600,"$1,148.5200",10/06/2026 - 15:39
+USO,Market - Sell,United States Commodity Funds LLC - United States Oil Fund,US,-28,1.00,USD,Equities,$143.2600,"$4,011.2800",10/02/2026 - 09:35
+MPC,Market - Sell,Marathon Petroleum Corp,US,-4,1.00,USD,Equities,$412.0100,"$1,648.0400",10/02/2026 - 09:32
+VLO,Market - Sell,Valero Energy Corp.,US,-5,1.00,USD,Equities,$404.0300,"$2,020.1500",10/02/2026 - 09:30
+RSG,Dividends,"Republic Services, Inc.",US,9,1.00,USD,Equities,$0.6700,$6.0300,10/02/2026 - 00:00
+FRT,Dividends,Federal Realty Investment Trust.,US,20,1.00,USD,Equities,$1.1600,$23.2000,10/01/2026 - 00:00
+TLH,Dividends,BlackRock Institutional Trust Company N.A. - iShares 10-20 Year Treasury Bond ETF,US,254,1.00,USD,Equities,$0.3580,$90.9216,10/01/2026 - 00:00
+VCLT,Dividends,"Vanguard Group, Inc. - Vanguard Long-Term Corporate Bond ETF",US,296,1.00,USD,Equities,$0.3498,$103.5408,10/01/2026 - 00:00
+SGOV,Dividends,iShares Trust - iShares 0-3 Month Treasury Bond ETF,US,69,1.00,USD,Equities,$0.3005,$20.7377,10/01/2026 - 00:00
+NUE,Market - Buy,Nucor Corp.,US,5,1.00,USD,Equities,$239.5700,"-$1,197.8500",09/30/2026 - 10:22
+SNA,Market - Buy,"Snap-on, Inc.",US,5,1.00,USD,Equities,$368.3200,"-$1,841.6000",09/30/2026 - 10:07
+MRNA,Market - Sell,Moderna Inc,US,-7,1.00,USD,Equities,$189.7500,"$1,328.2500",09/30/2026 - 09:58
+RSG,Market - Buy,"Republic Services, Inc.",US,9,1.00,USD,Equities,$211.4000,"-$1,902.6000",09/30/2026 - 09:52
+PG,Market - Buy,Procter & Gamble Co.,US,12,1.00,USD,Equities,$148.3400,"-$1,780.0800",09/30/2026 - 09:43
+BK,Market - Sell,Bank Of New York Mellon Corp,US,-6,1.00,USD,Equities,$146.5000,$879.0000,09/30/2026 - 09:34
+DUK,Market - Sell,Duke Energy Corp.,US,-21,1.00,USD,Equities,$114.7100,"$2,408.9100",09/30/2026 - 09:34
+O,Market - Sell,Realty Income Corp.,US,-42,1.00,USD,Equities,$54.8700,"$2,304.5400",09/30/2026 - 09:34
+O,Dividends,Realty Income Corp.,US,42,1.00,USD,Equities,$0.2715,$11.4030,09/30/2026 - 00:00
+CPER,Market - Buy,United States Commodity Funds LLC - United States Copper Index Fund,US,100,1.00,USD,Equities,$40.9400,"-$4,094.0000",09/22/2026 - 11:39
+USO,Market - Sell,United States Commodity Funds LLC - United States Oil Fund,US,-28,1.00,USD,Equities,$147.1000,"$4,118.8000",09/22/2026 - 11:30
+AFL,Market - Buy,Aflac Inc.,US,18,1.00,USD,Equities,$115.7800,"-$2,084.0400",09/21/2026 - 12:12
+FRT,Market - Buy,Federal Realty Investment Trust.,US,20,1.00,USD,Equities,$110.4900,"-$2,209.8000",09/21/2026 - 12:11
+TGT,Market - Buy,Target Corp,US,6,1.00,USD,Equities,$158.3300,-$949.9800,09/21/2026 - 12:06
+MPC,Market - Buy,Marathon Petroleum Corp,US,2,1.00,USD,Equities,$416.2900,-$832.5800,09/21/2026 - 12:04
+VLO,Market - Buy,Valero Energy Corp.,US,3,1.00,USD,Equities,$406.5500,"-$1,219.6500",09/21/2026 - 12:02
+DELL,Market - Buy,Dell Technologies Inc - Ordinary Shares - Class C,US,3,1.00,USD,Equities,$578.8500,"-$1,736.5500",09/21/2026 - 11:59
+MRNA,Market - Buy,Moderna Inc,US,6,1.00,USD,Equities,$169.0900,"-$1,014.5400",09/21/2026 - 11:57
+EXPD,Market - Sell,"Expeditors International Of Washington, Inc.",US,-5,1.00,USD,Equities,$191.9000,$959.5000,09/21/2026 - 11:44
+HPE,Market - Sell,Hewlett Packard Enterprise Co,US,-17,1.00,USD,Equities,$60.9500,"$1,036.1500",09/21/2026 - 11:43
+STT,Market - Sell,State Street Corp.,US,-5,1.00,USD,Equities,$183.7800,$918.9000,09/21/2026 - 11:43
+BRK/B,Market - Sell,Berkshire Hathaway Inc. - Ordinary Shares - Class B,US,-4,1.00,USD,Equities,$507.2500,"$2,029.0000",09/21/2026 - 11:24
+CNC,Market - Sell,Centene Corp.,US,-14,1.00,USD,Equities,$65.1100,$911.5400,09/21/2026 - 11:11
+MCD,Market - Sell,McDonald`s Corp,US,-9,1.00,USD,Equities,$247.2300,"$2,225.0700",09/21/2026 - 11:02
+SPY,Dividends,SSgA Active Trust - SPDR S&P 500 ETF Trust,US,71,1.00,USD,Equities,$1.8888,$134.1072,09/18/2026 - 00:00
+HPE,Dividends,Hewlett Packard Enterprise Co,US,17,1.00,USD,Equities,$0.1425,$2.4225,09/17/2026 - 00:00
+KO,Dividends,Coca-Cola Co,US,28,1.00,USD,Equities,$0.5300,$14.8400,09/15/2026 - 00:00
+SGOV,Stop - Buy,iShares Trust - iShares 0-3 Month Treasury Bond ETF,US,69,1.00,USD,Equities,$100.5300,"-$6,936.5700",09/14/2026 - 15:28
+USO,Stop - Buy,United States Commodity Funds LLC - United States Oil Fund,US,56,1.00,USD,Equities,$155.4600,"-$8,705.7600",09/14/2026 - 15:19
+JNJ,Stop - Buy,Johnson & Johnson,US,9,1.00,USD,Equities,$267.4800,"-$2,407.3200",09/14/2026 - 15:16
+LIN,Stop - Buy,Linde Plc.,US,5,1.00,USD,Equities,$464.6900,"-$2,323.4500",09/14/2026 - 15:14
+KO,Stop - Buy,Coca-Cola Co,US,28,1.00,USD,Equities,$89.2100,"-$2,497.8800",09/14/2026 - 15:14
+MCD,Stop - Buy,McDonald`s Corp,US,9,1.00,USD,Equities,$258.1300,"-$2,323.1700",09/14/2026 - 15:13
+O,Stop - Buy,Realty Income Corp.,US,42,1.00,USD,Equities,$59.4600,"-$2,497.3200",09/14/2026 - 15:12
+L,Stop - Buy,Loews Corp.,US,23,1.00,USD,Equities,$108.8300,"-$2,503.0900",09/14/2026 - 15:11
+DUK,Stop - Buy,Duke Energy Corp.,US,21,1.00,USD,Equities,$118.9900,"-$2,498.7900",09/14/2026 - 15:09
+REG,Stop - Buy,Regency Centers Corporation,US,33,1.00,USD,Equities,$74.6800,"-$2,464.4400",09/14/2026 - 15:08
+ATO,Stop - Buy,Atmos Energy Corp.,US,15,1.00,USD,Equities,$164.0100,"-$2,460.1500",09/14/2026 - 15:08
+BRK/B,Stop - Buy,Berkshire Hathaway Inc. - Ordinary Shares - Class B,US,4,1.00,USD,Equities,$514.8700,"-$2,059.4800",09/14/2026 - 15:07
+BK,Stop - Buy,Bank Of New York Mellon Corp,US,6,1.00,USD,Equities,$157.6000,-$945.6000,09/14/2026 - 15:04
+EXPD,Stop - Buy,"Expeditors International Of Washington, Inc.",US,5,1.00,USD,Equities,$193.3700,-$966.8500,09/14/2026 - 15:03
+TGT,Stop - Buy,Target Corp,US,6,1.00,USD,Equities,$159.4200,-$956.5200,09/14/2026 - 15:02
+STT,Stop - Buy,State Street Corp.,US,5,1.00,USD,Equities,$188.4400,-$942.2000,09/14/2026 - 15:01
+MPC,Stop - Buy,Marathon Petroleum Corp,US,2,1.00,USD,Equities,$392.2500,-$784.5000,09/14/2026 - 15:01
+CNC,Stop - Buy,Centene Corp.,US,14,1.00,USD,Equities,$69.5200,-$973.2800,09/14/2026 - 15:00
+VLO,Stop - Buy,Valero Energy Corp.,US,2,1.00,USD,Equities,$379.2400,-$758.4800,09/14/2026 - 14:59
+HPE,Stop - Buy,Hewlett Packard Enterprise Co,US,17,1.00,USD,Equities,$56.7400,-$964.5800,09/14/2026 - 14:58
+MRNA,Stop - Buy,Moderna Inc,US,6,1.00,USD,Equities,$146.2100,-$877.2600,09/14/2026 - 14:57
+DELL,Stop - Buy,Dell Technologies Inc - Ordinary Shares - Class C,US,1,1.00,USD,Equities,$545.3000,-$545.3000,09/14/2026 - 14:42
+TLH,Market - Buy,BlackRock Institutional Trust Company N.A. - iShares 10-20 Year Treasury Bond ETF,US,254,1.00,USD,Equities,$95.2600,"-$24,196.0400",09/14/2026 - 14:32
+SPY,Market - Buy,SSgA Active Trust - SPDR S&P 500 ETF Trust,US,71,1.00,USD,Equities,$762.0700,"-$54,106.9700",09/14/2026 - 14:31
+VCLT,Market - Buy,"Vanguard Group, Inc. - Vanguard Long-Term Corporate Bond ETF",US,296,1.00,USD,Equities,$70.8900,"-$20,983.4400",09/14/2026 - 14:30

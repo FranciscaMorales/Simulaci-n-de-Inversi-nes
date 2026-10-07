@@ -10,6 +10,7 @@ from docx.oxml import OxmlElement
 from config import *
 
 S = pd.read_pickle(os.path.join(RESULTADOS, "estado.pkl")); T = S["T"]; FIG = os.path.join(BASE, "informe", "figuras")
+AD = pd.read_pickle(os.path.join(RESULTADOS, "adicional.pkl"))   # codigo/analisis_adicional.py: benchmark por clase, forward y rebalanceo
 AZ = RGBColor(0x1F, 0x3A, 0x5F)
 d = Document()
 for s in d.sections: s.left_margin = s.right_margin = Cm(2.3); s.top_margin = s.bottom_margin = Cm(2.0)
@@ -79,6 +80,8 @@ B([("Retorno requerido. ", f"Para financiar Educación, Villarrica y la herencia
    ("Probabilidad de éxito. ", f"Educación se cumple en ~100% de los escenarios simulados, en USD y en UF. Con retornos históricos 2013-2026, los tres objetivos se cumplen con {p_(g('Nexum','Hist','USD','P(3 objetivos)'))} ({p_(g('Nexum','Hist','UF','P(3 objetivos)'))} medido en UF). Con supuestos prospectivos prudentes —retorno real esperado {p_(g('Nexum','Prosp','USD','Retorno real anual'))}, prácticamente igual al requerido— la probabilidad conjunta es {p_(g('Nexum','Prosp','USD','P(3 objetivos)'))}."),
    ("Frente a la cartera actual de la AGF (85/15). ", f"La AGF rindió más en 2016-2026 ({p_(mt('2016-2026','Cartera actual AGF 85/15','CAGR'))} vs {p_(mt('2016-2026','Cartera Nexum','CAGR'))} anual) por su 76,5% en el S&P 500, con mayor volatilidad, caídas más profundas y ~26% de exposición a tecnología (el mismo riesgo del empleo de Tomás; Nexum ~14%). Hacia adelante, Nexum entrega mayor probabilidad de éxito ({p_(g('Nexum','Prosp','UF','P(3 objetivos)'))} vs {p_(g('AGF 85/15','Prosp','UF','P(3 objetivos)'))} en UF)."),
    ("Gestión activa. ", f"Tracking error ex-ante {p_(te.iloc[0])} (objetivo 3%, máximo 4%) e information ratio {n_(mt('2016-2026','Cartera Nexum','Information ratio'))} frente al benchmark de política en 2016-2026."),
+   ("Riesgo cambiario. ", "El 28-sep-2026 se contrató un forward de venta de USD 104.000 a un año (~70% de la cartera), cerca de la cobertura que minimiza el riesgo medido en pesos: en la simulación, la volatilidad anual en pesos baja de {} a {}.".format(
+       *[p_(AD["Forward_simulacion"].set_index(["Medido en", "Cartera"]).loc[("CLP (moneda de las metas)", c), "Volatilidad"]) for c in ["Sin cobertura", "Con el forward"]])),
    ("Recomendación. ", f"Mantener la asignación, proteger Educación como prioridad 1 y acordar con la familia el orden de ajuste si el mercado no entrega el retorno requerido: primero la herencia, luego Villarrica, nunca Educación. Reducir Villarrica 25% y la herencia a USD 250.000 eleva la probabilidad conjunta prospectiva de {p_(pal.loc['Base','P(3 objetivos)'])} a {p_(pal.loc['Ambas','P(3 objetivos)'])}.")])
 
 # ================= 2. IPS =================
@@ -116,7 +119,7 @@ TB(["Año", "Concepto", "UF", "USD reales"], [[int(r["Año"]), r["Concepto"][:80
 H("2.6 Restricciones", 2)
 B([("Liquidez: ", "sin retiros hasta el año 14; reserva operativa de 4% del capital (2% caja + 2% reserva cambiaria); fondo de emergencia fuera del mandato."),
    ("Legales y tributarias: ", "ETF y acciones listadas en EE.UU.; retención de 15% sobre dividendos por el convenio Chile-EE.UU.; tributación en Chile al liquidar."),
-   ("Éticas e idoneidad (CFA, Estándar III.C): ", "sin derivados complejos, criptoactivos, apalancamiento ni ventas cortas, por el nivel de conocimiento declarado."),
+   ("Éticas e idoneidad (CFA, Estándar III.C): ", "sin derivados complejos, criptoactivos, apalancamiento ni ventas cortas, por el nivel de conocimiento declarado. Única excepción: forwards de venta de USD contra CLP con un banco regulado, solo como cobertura cambiaria (monto menor al valor de la cartera y plazo de hasta un año), explicados a los clientes y aceptados por ellos (sección 3.4)."),
    ("Plataforma: ", "instrumentos disponibles en StockTrak; al menos 150 operaciones en 12 semanas y 5 por semana en promedio.")])
 H("2.7 Asignación estratégica y riesgo-retorno esperado", 2)
 FIGURA("f3_asignacion.png", "Figura 2. Pesos Black-Litterman (aprobados) frente al prior de paridad de riesgo y a Markowitz histórico. Fuente: hojas 05 y 06 del modelo.")
@@ -140,7 +143,10 @@ TB(["Elemento", "Regla"], [
     ["Revisión semanal", "Ranking de Momentum con banda de permanencia: una acción se mantiene mientras esté en el top 25"],
     ["Costos", "No se ejecutan ajustes menores a USD 500 (comisión de USD 10 = 2% del monto)"],
     ["Disciplina de venta", "Núcleo sin stop-loss (se controla con bandas). Satélite: salida por señal; stop de emergencia de −15%; en posiciones con ganancia, stop móvil sobre el costo"],
-    ["Eventos", "No se ejecuta en la primera media hora ni durante la publicación de datos de la Fed, inflación o empleo"]], w=[3.6, 12.4])
+    ["Eventos", "No se ejecuta en la primera media hora ni durante la publicación de datos de la Fed, inflación o empleo"],
+    ["Cobertura cambiaria", "Forward de venta de USD a un año por ~70% de la cartera (sección 3.4); al vencimiento se evalúa renovarlo con la razón de cobertura vigente"]], w=[3.6, 12.4])
+bd = AD["Bandas_rebalanceo"].set_index("Regla")
+P(f"Las bandas no son restrictivas. En el backtest 2013-2026, las bandas vigentes (±5 / ±2) se activan {n_(bd.loc['Bandas ±5 / ±2 pp (vigente)','Rebalanceos por año'],1)} veces al año (~{n_(bd.loc['Bandas ±5 / ±2 pp (vigente)','Órdenes por año'],0)} órdenes) y mantienen la cartera a {p_(bd.loc['Bandas ±5 / ±2 pp (vigente)','Desvío vs. pesos fijos (TE)'])} de tracking error de los pesos aprobados. Bandas de ±3 / ±1 duplicarían los rebalanceos ({n_(bd.loc['Bandas ±3 / ±1 pp','Rebalanceos por año'],1)} al año) sin mejorar el resultado, y el rebalanceo mensual exigiría ~{n_(bd.loc['Mensual por calendario','Órdenes por año'],0)} órdenes al año. No rebalancear nunca deja la cartera con {p_(bd.loc['Sin rebalanceo','Desvío vs. pesos fijos (TE)'])} de desvío y más volatilidad ({p_(bd.loc['Sin rebalanceo','Volatilidad'])} vs {p_(bd.loc['Bandas ±5 / ±2 pp (vigente)','Volatilidad'])}). Las operaciones que exige StockTrak provienen de la rotación dentro de los sleeves activos, no de las bandas.")
 H("2.9 Política de revisión y control", 2)
 B(["Revisión anual del IPS y del Montecarlo con datos actualizados.",
    "Revisión extraordinaria si: la probabilidad de Educación cae bajo 90%; la cartera cae más de 15% desde su máximo; el tracking error supera 4%; Tomás pierde su empleo; cambia algún objetivo.",
@@ -169,18 +175,54 @@ B(["Rotación sectorial con ETF: misma familia que Momentum (correlación ~0,67)
    "Reversión de corto plazo semanal: ~19 operaciones por semana; los costos (~10% anual a 0,1% por lado y peor con la comisión fija de StockTrak) eliminan su prima.",
    "Momentum de 4 semanas y estrategias semanales: Sharpe neto de costos de 0,2 a 0,5, inferior a las estrategias mensuales.",
    "Betting Against Beta: requiere apalancamiento y ventas cortas, excluidos por idoneidad."])
-H("3.4 Moneda funcional: USD, con simulaciones en UF", 2)
+aa = AD["Activos_adicionales"].set_index("Variante"); a_agg = aa.loc["Duración intermedia: 50% de la renta fija en AGG"]; a_efa = aa.loc["Internacional: 5 pp del S&P 500 a EFA"]; a_0 = aa.loc["Vigente"]
+P("Activos adicionales evaluados (octubre de 2026). Agregar un activo cambia la asignación estratégica, por lo que exige recalibrar Black-Litterman y modificar este IPS; no es una decisión de rebalanceo. Se evaluaron los dos candidatos con datos suficientes:")
+TB(["Variante", "Retorno anual", "Volatilidad", "Sharpe", "Máx. caída", "TE", "P(3) histórico", "P(3) prospectivo"],
+   [[k, p_(r["Retorno anual"]), p_(r["Volatilidad"]), n_(r["Sharpe"]), p_(r["Máx. caída"]), p_(r["TE vs. benchmark de política"]), p_(r["P(3 objetivos) histórico"]), p_(r["P(3 objetivos) prospectivo"])] for k, r in aa.iterrows()],
+   w=[5.2, 1.6, 1.6, 1.2, 1.6, 1.2, 1.8, 1.8], sz=7.5,
+   nota="Backtest 2013-2026 en USD. Prospectivo: supuesto propio de 2,4% real para AGG (menor duración que TLH, 2,6%) y 5,5% para EFA. Fuente: codigo/analisis_adicional.py.")
+B([("Bonos de duración intermedia (AGG, proxy de VCIT o SCHP): ", f"bajan la volatilidad ({p_(a_0['Volatilidad'])} → {p_(a_agg['Volatilidad'])}) y la caída máxima, pero con supuestos prudentes la probabilidad conjunta cae de {p_(a_0['P(3 objetivos) prospectivo'])} a {p_(a_agg['P(3 objetivos) prospectivo'])}, porque el plan necesita la prima por plazo. TLH además diversifica mejor que AGG frente al S&P 500. Se mantiene la renta fija larga y se reevalúa en la revisión anual."),
+   ("Acciones internacionales (EFA): ", f"correlación de 0,82 con el S&P 500; en el backtest empeoran el resultado ({p_(a_efa['P(3 objetivos) histórico'])} vs {p_(a_0['P(3 objetivos) histórico'])}) y hacia adelante suman menos de un punto ({p_(a_efa['P(3 objetivos) prospectivo'])}). No justifican un cambio de política.")])
+H("3.4 Moneda funcional: USD, con simulaciones en UF y cobertura con forward", 2)
 fx = T["Riesgo_cambiario"].set_index("Indicador")["Valor"]
-P("La moneda funcional es el USD porque todo el universo de inversión cotiza en dólares y cubrir el tipo de cambio exigiría derivados que el perfil excluye. Las necesidades del cliente (UF/CLP) se evalúan explícitamente: el Montecarlo se presenta también en UF.")
+P("La moneda funcional es el USD porque todo el universo de inversión cotiza en dólares. Las necesidades del cliente (UF/CLP) se evalúan explícitamente: el Montecarlo se presenta también en UF y, desde el 28-sep-2026, parte del riesgo cambiario de corto plazo se cubre con un forward (ver más abajo).")
 B([("Cobertura natural: ", f"el peso se deprecia cuando caen los mercados globales (correlación S&P 500 vs. USD/CLP de {n_(fx.iloc[1])}). En el 10% de los peores meses del S&P 500 el dólar subió {p_(fx.iloc[2])} en promedio: la cartera perdió {p_(fx.iloc[3])} en USD pero solo {p_(fx.iloc[4])} medida en pesos."),
    ("Diversificación del riesgo país: ", "el capital humano y la vivienda de la familia ya están expuestos a Chile."),
    ("Costo: ", f"la volatilidad del USD/CLP es {p_(fx.iloc[0])} anual; medida en pesos, la volatilidad de la cartera sube de {p_(fx.iloc[5])} a {p_(fx.iloc[6])}, y la probabilidad conjunta histórica baja de {p_(g('Nexum','Hist','USD','P(3 objetivos)'))} a {p_(g('Nexum','Hist','UF','P(3 objetivos)'))}. Se monitorea en cada revisión.")])
+H("Cobertura cambiaria con forward USD/CLP", 3)
+fc = AD["Forward_condiciones"].set_index("Concepto")["Valor"]; fs = AD["Forward_simulacion"]; fl = AD["Forward_liquidacion"].set_index("Indicador")["Valor"]
+fr = AD["Forward_razon_cobertura"]; h_opt = fr.loc[fr["Volatilidad 12m en CLP"].idxmin(), "Razón de cobertura"]
+fv = lambda m, cart, k: fs[fs["Medido en"].str.startswith(m) & (fs.Cartera == cart)][k].iloc[0]
+P(f"El 28 de septiembre de 2026 Nexum contrató un forward con {fc['Contraparte']}: vende USD {n_(fc['Monto (USD)'],0)} a CLP {n_(fc['Precio forward (CLP por USD)'])} por dólar, con vencimiento el 30 de septiembre de 2027. El precio es el spot de CLP {n_(fc['Tipo de cambio spot (CLP por USD)'])} menos {n_(-fc['Puntos forward'])} puntos forward. Los puntos negativos reflejan que la tasa en pesos es menor que la tasa en dólares (paridad cubierta de tasas): cubrirse cuesta {p_(-fc['Puntos como % del spot (≈ tasa CLP − tasa USD)'],2)} del monto, unos USD {n_(-fc['Costo de la cobertura a spot constante (USD)'],0)} si el dólar no se mueve. El contrato no se opera en StockTrak; se registra y valoriza aparte.")
+TB(["Dólar al vencimiento (CLP)", "Compensación (MM CLP)", "Compensación (USD)", "Para Nexum"],
+   [[n_(r["Dólar al vencimiento (CLP)"]), n_(r["Compensación (MM CLP)"]), n_(r["Compensación (USD)"], 0), r["Lectura"]] for _, r in AD["Forward_escenarios"].iterrows()], w=[4, 4, 4, 4],
+   nota="Compensación = USD 104.000 × (precio forward − dólar al vencimiento). Si el dólar sube, Nexum paga la diferencia, pero la cartera en USD vale más en pesos; si baja, Nexum recibe la diferencia y compensa la pérdida de valor en pesos.")
+P(f"Por qué ese monto. USD 104.000 cubren {p_(fc['Cobertura sobre el mandato (USD 150.000)'],0)} del mandato ({p_(fc['Cobertura sobre el valor al 28-sep'],0)} del valor de la cartera ese día). Como el peso se deprecia cuando caen los mercados (cobertura natural, correlación {n_(fl['Correlación cartera Nexum vs. Δ USD/CLP (mensual)'])}), cubrir el 100% no minimiza el riesgo en pesos: en la simulación, la volatilidad en pesos es mínima con una cobertura de ~{p_(h_opt,0)}, muy cerca del {p_(fc['Cobertura sobre el valor al 28-sep'],0)} contratado.")
+TB(["Medido en", "Cartera", "Retorno medio 12 meses", "Volatilidad", "Peor 5%", "P(pérdida > 10%)"],
+   [[r["Medido en"], r["Cartera"], p_(r["Retorno medio 12m"]), p_(r["Volatilidad"]), p_(r["Peor 5%"]), p_(r["P(pérdida > 10%)"])] for _, r in fs.iterrows()], w=[4.2, 2.8, 2.6, 2.2, 2, 2.4],
+   nota="20.000 escenarios de 12 meses por bootstrap de los retornos mensuales conjuntos de la cartera y del USD/CLP (2013-2026), con el dólar sin tendencia. Fuente: codigo/analisis_adicional.py.")
+P(f"Lectura. Medido en pesos, la moneda de las metas, el forward baja la volatilidad de {p_(fv('CLP','Sin cobertura','Volatilidad'))} a {p_(fv('CLP','Con el forward','Volatilidad'))} y el peor 5% de {p_(fv('CLP','Sin cobertura','Peor 5%'))} a {p_(fv('CLP','Con el forward','Peor 5%'))}. Medido en dólares, la aumenta ({p_(fv('USD','Sin cobertura','Volatilidad'))} → {p_(fv('USD','Con el forward','Volatilidad'))}): en los peores años de la cartera el peso se deprecia y el forward se paga (en promedio USD {n_(-fl['Compensación media en el 10% de peores años de la cartera en USD'],0)} en el 10% de peores años). Es el costo de medir el riesgo en la moneda de las metas, que es la que importa para la familia.")
+P(f"Liquidez. En {p_(fl['Probabilidad de pagar más que la reserva cambiaria (USD 3.000)'],0)} de los escenarios la compensación supera la reserva cambiaria de 2% (USD 3.000, que alcanza hasta un dólar de CLP {n_(fc['Tipo de cambio que agota la reserva cambiaria de 2% (USD 3.000)'],0)}); en el 5% más adverso Nexum paga ~USD {n_(fl['Pago en el 5% de escenarios más adversos (USD)'],0)}. Ese pago se financia con SGOV y venta de activos en USD, que en ese mismo escenario valen más en pesos. El valor de mercado del forward se informa mensualmente y la renovación se decide al vencimiento.")
 H("3.5 Benchmark de política", 2)
 TB(["Sleeve", "Peso", "Benchmark (índice invertible del mismo universo)"], [
     ["S&P 500", "37,9%", "S&P 500 (SPY)"], ["Tesoro 10-20 años", "16,9%", "ICE U.S. Treasury 10-20 Year Index (TLH)"], ["Corporativos largo plazo", "14,6%", "Bloomberg U.S. Long Corporate Index (VCLT)"],
     ["Momentum en acciones", "7,1%", "Alpha Architect U.S. Quantitative Momentum (QMOM)"], ["Low-Volatility", "17,5%", "S&P 500 Low Volatility Index (SPLV)"],
     ["Momentum en commodities", "6,1%", "Mezcla igual ponderada GLD/USO/DBA/SLV/CPER"]], w=[4.2, 1.6, 10.2],
    nota="Benchmark compuesto ponderado por la asignación estratégica y expresado en USD. Reemplaza la tasa de política de la Fed y el MSCI ACWI de la versión anterior, que no eran invertibles ni representaban el universo. Limitación: QMOM existe desde dic-2015, por lo que las métricas relativas usan 2016-2026.")
+H("Benchmark por clase de activo", 3)
+bc = AD["Benchmark_clases"]; bc16 = bc[bc["Período"] == "2016-2026"].set_index("Clase"); bk = AD["Benchmark_compuesto"]
+bkv = lambda per, s, k: bk[(bk["Período"] == per) & bk.Serie.str.startswith(s)][k].iloc[0]
+P("El benchmark por sleeve mide si cada estrategia cumple su regla. El benchmark por clase de activo responde otra pregunta: si las decisiones dentro de cada clase (factores en renta variable, duración en renta fija, señal en commodities) agregan valor frente al índice amplio de esa clase. Cada clase se compara con un índice invertible del mismo universo:")
+TB(["Clase (peso)", "Benchmark", "Retorno Nexum", "Retorno benchmark", "Vol. Nexum / benchmark", "Máx. caída Nexum / benchmark", "TE", "Aporte al retorno activo"],
+   [[f"{k} ({p_(r['Peso'])})", r["Benchmark"], p_(r["Retorno Nexum"]), p_(r["Retorno benchmark"]), f"{p_(r['Vol. Nexum'])} / {p_(r['Vol. benchmark'])}",
+     f"{p_(r['Máx. caída Nexum'])} / {p_(r['Máx. caída benchmark'])}", p_(r["Tracking error"]), f"{n_(r['Aporte a la cartera (pp)'] * 100)} pp"] for k, r in bc16.iterrows()]
+   + [["Liquidez (reserva 4%)", "T-Bills 0-3 meses (BIL/SGOV)", "—", "—", "—", "—", "—", "fuera de la asignación"]],
+   w=[3, 3.3, 1.5, 1.6, 2, 2.2, 1.1, 1.6], sz=7.5,
+   nota="2016-2026, USD. Renta fija: 50% TLH + 50% VCLT como proxy invertible del Bloomberg U.S. Long Government/Credit (BLV no está en la base de datos). Commodities: el Bloomberg Commodity Index sería el índice amplio, pero no está en la base; se usa la mezcla igual ponderada de los 5 ETF. Fuente: codigo/analisis_adicional.py.")
+rv = bc16.loc["Renta variable EE.UU."]
+P(f"Lectura. El benchmark por clase rindió {p_(bkv('2016-2026','Benchmark por clase','CAGR'))} anual frente a {p_(bkv('2016-2026','Cartera Nexum','CAGR'))} de Nexum (tracking error {p_(bkv('2016-2026','Cartera Nexum','Tracking error'))}, dentro del objetivo de 3%). Casi toda la diferencia viene de la renta variable: Low-Volatility y Momentum rindieron {n_(-rv['Retorno activo anual']*100)} puntos menos al año que el S&P 500 en una década excepcional para el índice, pero con menos volatilidad ({p_(rv['Vol. Nexum'])} vs {p_(rv['Vol. benchmark'])}), una caída máxima menor ({p_(rv['Máx. caída Nexum'])} vs {p_(rv['Máx. caída benchmark'])}) y el mismo Sharpe ({n_(rv['Sharpe Nexum'])} vs {n_(rv['Sharpe benchmark'])}). Es decir, el satélite de renta variable cumplió su función de bajar el riesgo, no de superar al índice. La renta fija es pasiva y replica su benchmark (TE {p_(bc16.loc['Renta fija larga EE.UU.','Tracking error'])}). En 2013-2026 el resultado es similar ({p_(bkv('2013-2026','Cartera Nexum','CAGR'))} vs {p_(bkv('2013-2026','Benchmark por clase','CAGR'))}), con un aporte positivo de commodities.")
+du = AD["Duracion_renta_fija"]
+P(f"Decisión de duración. Frente a los bonos amplios de EE.UU. (AGG, duración ~6), la renta fija larga de Nexum rindió casi lo mismo en 2013-2026 ({p_(du.iloc[0]['Retorno anual'])} vs {p_(du.iloc[1]['Retorno anual'])}) con el doble de volatilidad, protegió más en la crisis de 2020 ({p_(du.iloc[0]['Feb-mar 2020 (S&P 500 −19%)'])} vs {p_(du.iloc[1]['Feb-mar 2020 (S&P 500 −19%)'])}) y cayó más en el alza de tasas de 2022 ({p_(du.iloc[0]['2022 (alza de tasas)'])} vs {p_(du.iloc[1]['2022 (alza de tasas)'])}). La duración larga es una decisión estratégica coherente con metas a 14-50 años, y por eso el benchmark de la clase es de largo plazo y no el AGG.")
 H("3.6 Métricas de desempeño", 2)
 TB(["Métrica", "Para qué se usa", "Limitación"], [
     ["Sharpe", "Retorno por unidad de riesgo total", "Supone normalidad; penaliza la volatilidad al alza"],
@@ -247,6 +289,7 @@ P("La cartera se implementó el 14-sep-2026 con los pesos aprobados. Decisiones 
 B([("Rebalanceo de fin de septiembre: ", "Momentum se llevó a peso igual; Moderna se redujo de 12 a 5 acciones, asegurando ~USD 225 de ganancia, con un stop móvil sobre el costo para las restantes."),
    ("Low-Volatility: ", "se redujo utilities y real estate de 50% a ~29% del sleeve (salieron Realty Income y Duke Energy), por la sensibilidad a tasas observada; entraron PG, RSG y SNA siguiendo el ranking."),
    ("Petróleo: ", "se vendieron MPC, VLO y USO para reducir la exposición conjunta al petróleo; la señal de octubre confirmó la salida de USO."),
+   ("Cobertura cambiaria: ", f"el 28-sep se contrató fuera de StockTrak un forward de venta de USD {n_(fc['Monto (USD)'],0)} a CLP {n_(fc['Precio forward (CLP por USD)'])} con vencimiento el 30-sep-2027 (sección 3.4)."),
    ("Operaciones: ", "~50 en las primeras tres semanas, en línea con la regla de 150 en 12 semanas. Las comisiones de la plataforma (~USD 10 por operación, ~USD 1.500 por las 150 exigidas) se tratan como costo operativo de la simulación y no entran en Black-Litterman ni en el Montecarlo.")])
 P("Desviaciones respecto de la regla, documentadas:", b=None)
 TB(["Fecha", "Sleeve", "Desviación", "Motivo / tratamiento"], [
@@ -255,6 +298,13 @@ TB(["Fecha", "Sleeve", "Desviación", "Motivo / tratamiento"], [
     ["30-sep", "Low-Volatility", "Salen O y DUK; entran PG, RSG y SNA; se excluye MCD", "Reducir utilities y REITs (sensibles a tasas) de 50% a ~29% del sleeve; MCD excluida por deterioro de tendencia. Reemplazos en orden del ranking"],
     ["2-oct", "Momentum / Commodities", "Venta de MPC, VLO y USO", "Reducir la exposición conjunta al petróleo; MPC y VLO seguían en la señal (decisión de riesgo)"]], w=[1.5, 2.6, 5.4, 6.5], sz=7.5)
 P("Momentum es el sleeve con mejor desempeño en vivo (≈ +3,7% desde el 14-sep frente a ≈ +2,4% de QMOM). La cartera total se ve afectada por la subida de la tasa a 10 años a 5,3%, que golpea al núcleo de renta fija larga (~30% de la cartera). Es el principal riesgo de corto plazo y está identificado en la sección 6.", it=False)
+vc = AD["Vivo_por_clase"].set_index("Clase")
+TB(["Clase", "Invertido el 14-sep", "Resultado (USD)", "Retorno Nexum", "Benchmark", "Retorno benchmark", "Diferencia"],
+   [[k, u_(r["Invertido el 14-sep"]), n_(r["Resultado (USD)"], 0), p_(r["Retorno Nexum"], 2), r["Benchmark"], p_(r["Retorno benchmark"], 2), f"{n_(r['Diferencia (pp)'])} pp"] for k, r in vc.iterrows()],
+   w=[3.4, 2.4, 2, 1.8, 3.2, 1.8, 1.6], sz=7.5,
+   nota="Desde el 14-sep hasta el 6-oct (exports de StockTrak). El resultado incluye dividendos y comisiones de USD 10; los benchmarks parten de nuestro precio de entrada (o del cierre del 14-sep) con dividendos reinvertidos. La suma de los resultados cuadra con la pérdida total de la cuenta. Fuente: codigo/analisis_adicional.py.")
+rvv, cmv = vc.loc["Renta variable EE.UU."], vc.loc["Commodities"]
+P(f"Por clase de activo: la renta fija replica su benchmark, como corresponde a un núcleo pasivo; la renta variable queda {n_(-rvv['Diferencia (pp)'],1)} puntos bajo el S&P 500, en parte por las comisiones ({int(rvv['Operaciones'])} operaciones, USD {n_(10*rvv['Operaciones'],0)}) y en parte por el sesgo defensivo de Low-Volatility en un mercado al alza; commodities queda {n_(-cmv['Diferencia (pp)'],1)} puntos bajo su benchmark por la pérdida en USO, ya liquidado.")
 
 # ================= 6. RIESGOS =================
 H("6. Riesgos principales y mitigantes")
@@ -263,7 +313,8 @@ TB(["Riesgo", "Exposición", "Mitigante"], [
     ["Retorno de mercado menor al requerido", "Retorno esperado ≈ requerido", "Palancas acordadas: herencia y luego Villarrica; nunca Educación"],
     ["Concentración tecnológica / capital humano", "Empleo de Tomás en software", "Límite de 2 acciones por sector en el satélite; tecnología ~14% vs ~26% en la AGF"],
     ["Caídas abruptas de Momentum", "7% de la cartera, volatilidad ~24%", "Peso acotado, peso igual, stops de emergencia"],
-    ["Tipo de cambio", "Objetivos en UF/CLP, activos en USD", "Cobertura natural (correlación negativa); simulaciones en UF; reserva cambiaria de 2%"],
+    ["Tipo de cambio", "Objetivos en UF/CLP, activos en USD", "Forward de venta de USD 104.000 a un año (~70%, cerca de la cobertura de mínimo riesgo en pesos); cobertura natural; simulaciones en UF; reserva cambiaria de 2%"],
+    ["Liquidez del forward", "Si el dólar sube, Nexum paga la compensación al vencimiento (sept-2027)", f"Se paga con SGOV y venta de activos en USD, que en ese escenario valen más en pesos; supera la reserva de 2% en {p_(fl['Probabilidad de pagar más que la reserva cambiaria (USD 3.000)'],0)} de los escenarios; valor de mercado informado mensualmente"],
     ["Empleo de Tomás", "Aportes condicionados a seguir empleado", "Escenario de 14 aportes en la TIR; fondo de emergencia fuera del mandato; seguro de vida e invalidez"]], w=[3.6, 5.6, 6.8])
 
 # ================= 7. CONCLUSIÓN =================
@@ -315,7 +366,11 @@ for q, a in [
  ("¿Por qué la probabilidad de cumplir los tres objetivos es solo 46,5% en el escenario prospectivo?",
   "Porque con supuestos prudentes el retorno real esperado (~4,6%) apenas iguala al requerido (4,56%). Lo presentamos con transparencia en vez de mostrar solo el 96% histórico. Educación está asegurada en todos los escenarios; para Villarrica y la herencia se acordaron palancas que elevan la probabilidad a ~75%."),
  ("¿Por qué USD como moneda funcional si las necesidades del cliente están en UF y CLP?",
-  "Todo el universo de inversión cotiza en USD y cubrir el tipo de cambio requiere derivados que el perfil excluye. El peso se deprecia cuando caen los mercados (cobertura natural) y el ahorro en USD diversifica el riesgo país de una familia cuyo capital humano y vivienda están en Chile. Las simulaciones se presentan también en UF."),
+  "Todo el universo de inversión cotiza en USD. El peso se deprecia cuando caen los mercados (cobertura natural) y el ahorro en USD diversifica el riesgo país de una familia cuyo capital humano y vivienda están en Chile. Las simulaciones se presentan también en UF, y el riesgo cambiario de corto plazo se cubre parcialmente con un forward."),
+ ("Si el perfil excluye derivados, ¿por qué firmaron un forward?",
+  f"El perfil excluye derivados complejos, apalancamiento y especulación. Un forward de monedas es el derivado más simple, se usa solo para cubrir y el monto es menor que la cartera, así que no apalanca. Cubre {p_(fc['Cobertura sobre el valor al 28-sep'],0)} de la cartera: más cobertura no reduce el riesgo en pesos, porque el peso ya se deprecia cuando caen los mercados. Su costo es bajo ({p_(-fc['Puntos como % del spot (≈ tasa CLP − tasa USD)'],2)} del monto) y su riesgo es de liquidez: si el dólar sube hay que pagar la compensación, pero en ese escenario la cartera vale más en pesos."),
+ ("¿Contra qué se evalúa cada clase de activo?",
+  f"Renta variable contra el S&P 500, renta fija larga contra un índice de bonos largos de gobierno y corporativos, commodities contra la mezcla de sus 5 ETF y la reserva contra T-Bills. Frente a ese benchmark, Nexum rindió {p_(bkv('2016-2026','Cartera Nexum','CAGR'))} vs {p_(bkv('2016-2026','Benchmark por clase','CAGR'))} en 2016-2026, con menos volatilidad y caídas más bajas: el satélite de renta variable baja el riesgo, no busca superar al índice en un mercado alcista."),
  ("¿Por qué no usan Markowitz si tiene mayor Sharpe?",
   "Porque ese Sharpe es dentro de muestra. En la prueba fuera de muestra (calibrar con 2013-2019 y evaluar 2020-2026), Markowitz cae a 0,45, mientras que Black-Litterman calibrado con la misma información logra 0,65."),
  ("¿El modelo que presentan es el mismo que operan en StockTrak?",
@@ -325,5 +380,6 @@ H("Anexo C. Reproducibilidad")
 B(["codigo/config.py: todos los parámetros. codigo/estrategias.py: backtests. codigo/portafolio.py: Markowitz, Black-Litterman, benchmark y métricas.",
    "codigo/objetivos.py: flujos y TIR. codigo/montecarlo.py: simulación. codigo/validacion.py: robustez y walk-forward.",
    "codigo/run_all.py corre todo; codigo/excel_modelo.py genera el Excel; codigo/figuras.py e informe.py, este documento; codigo/senales.py, las señales de operación.",
+   "codigo/analisis_adicional.py: benchmark por clase de activo, resultado en vivo por clase, forward USD/CLP, bandas de rebalanceo y activos adicionales (resultados/analisis_adicional.xlsx).",
    "La versión portada de los backtests reproduce exactamente los resultados del modelo anterior (diferencia máxima 10⁻¹⁶) antes de aplicar las correcciones."])
 out = os.path.join(BASE, "informe", "Informe_Final_Nexum.docx"); d.save(out); print("OK", out)
