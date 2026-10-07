@@ -21,7 +21,7 @@ T = {}
 MEZCLA_CMD = c[CMD["universo"]].mean(axis=1)
 RF_LARGA = 0.5 * c.TLH + 0.5 * c.VCLT          # proxy invertible del Bloomberg U.S. Long Government/Credit (BLV no está en la base)
 CLASES = {"Renta variable EE.UU.": (["SPY", "LOW_VOL", "MOM_EQ"], "S&P 500 (SPY)", c.SPY),
-          "Renta fija larga EE.UU.": (["TLH", "VCLT"], "Tesoro y corporativos largos 50/50 (TLH/VCLT)", RF_LARGA),
+          "Renta fija larga EE.UU.": (["TLH", "VCLT"], "Bloomberg U.S. Long Government/Credit (proxy: 50% TLH + 50% VCLT)", RF_LARGA),
           "Commodities": (["MOM_CMD"], "Mezcla igual ponderada GLD/USO/DBA/SLV/CPER", MEZCLA_CMD)}
 comp = sum(W[a].sum() * b.reindex(df.index) for a, _, b in CLASES.values())
 filas, filas_c = [], []
@@ -65,7 +65,7 @@ def rt(t):
     """Retorno total desde nuestro precio de entrada del 14-sep (o el cierre de ese día si no compramos el ETF) al 6-oct."""
     tr, ci = pv["retorno_total"][t], pv["cierre"][t]
     return tr.iloc[-1] / tr.loc["2026-09-14"] * ci.loc["2026-09-14"] / entrada.get(t, ci.loc["2026-09-14"]) - 1
-bvivo = {"Renta variable EE.UU.": ("S&P 500 (SPY)", rt("SPY")), "Renta fija larga EE.UU.": ("TLH/VCLT 50/50", 0.5 * rt("TLH") + 0.5 * rt("VCLT")),
+bvivo = {"Renta variable EE.UU.": ("S&P 500 (SPY)", rt("SPY")), "Renta fija larga EE.UU.": ("Bloomberg U.S. Long Gov/Credit (proxy TLH/VCLT 50/50)", 0.5 * rt("TLH") + 0.5 * rt("VCLT")),
          "Commodities": ("Mezcla de 5 ETF", np.mean([rt(t) for t in CMD["universo"]])), "Liquidez (reserva)": ("T-Bills 0-3 meses (SGOV)", rt("SGOV"))}
 vivo["Benchmark"] = [bvivo[k][0] for k in vivo.index]; vivo["Retorno benchmark"] = [bvivo[k][1] for k in vivo.index]
 vivo["Diferencia (pp)"] = (vivo["Retorno Nexum"] - vivo["Retorno benchmark"]) * 100
