@@ -25,7 +25,7 @@ def etf_nucleo():
 def sectores():
     s = pd.read_csv(_p("sector_map.csv")); return dict(zip(s["Symbol"], s["GICS Sector"]))
 
-EXTRA = ["QMOM", "SPLV", "USMV", "EFA", "AGG", "BNDX", "BNDW", "CLP=X"]
+EXTRA = ["QMOM", "SPLV", "USMV", "EFA", "AGG", "BNDX", "BNDW", "CLP=X", "DJP"]   # DJP: Bloomberg Commodity Index TR (ETN), desde oct-2026
 def etf_extra():
     f = _p("extra_prices.parquet")
     if os.path.exists(f): return pd.read_parquet(f)

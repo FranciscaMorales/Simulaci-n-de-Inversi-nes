@@ -72,7 +72,7 @@ pd.DataFrame({"Cartera": port, "Benchmark": bench, "AGF": agf, "SPY": df.SPY}).t
 
 # 5. Estrategias individuales
 est = []
-for a, b in [("MOM_EQ", "QMOM"), ("LOW_VOL", "SPLV"), ("MOM_CMD", "MEZCLA_CMD")]:
+for a, b in [("MOM_EQ", "QMOM"), ("LOW_VOL", "SPLV"), ("MOM_CMD", "DJP")]:
     est.append({"Estrategia": NOMBRES[a], "Benchmark": b, **PF.metricas(df[a].loc[w16], bil, df.SPY, bser[a].loc[w16])})
     est.append({"Estrategia": NOMBRES[a] + " (2013-2026)", "Benchmark": "—", **PF.metricas(df[a], bil, df.SPY)})
 T["Estrategias"] = pd.DataFrame(est)

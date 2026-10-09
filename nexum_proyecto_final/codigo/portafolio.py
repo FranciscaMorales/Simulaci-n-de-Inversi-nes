@@ -43,7 +43,7 @@ def black_litterman(df):
 def benchmark_series(idx):
     c = D.mensual(D.etf_nucleo()); x = D.mensual(D.etf_extra())
     comp = {"SPY": c.SPY, "TLH": c.TLH, "VCLT": c.VCLT, "QMOM": x.QMOM, "SPLV": x.SPLV,
-            "MEZCLA_CMD": c[["GLD", "USO", "DBA", "SLV", "CPER"]].mean(axis=1)}
+            "MEZCLA_CMD": c[["GLD", "USO", "DBA", "SLV", "CPER"]].mean(axis=1), "DJP": x.DJP}
     return pd.DataFrame({a: comp[BENCH[a]] for a in ACTIVOS}).reindex(idx)
 
 def metricas(r, rf, mkt, b=None):

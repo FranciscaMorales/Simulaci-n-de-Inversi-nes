@@ -252,7 +252,7 @@ anchos(ws, {"B": 40, **{L(i): 15 for i in range(3, 12)}, "K": 50})
 # ======================= 7. BENCHMARK Y MÉTRICAS =======================
 ws = hoja("07_Benchmark_Metricas", "Benchmark de política, métricas y tracking error", "Benchmark compuesto en USD, ponderado por los pesos aprobados; cada sleeve contra un índice invertible de su mismo universo.")
 bm = pd.DataFrame([{"Sleeve": NOMBRES[a], "Peso": PESOS_APROBADOS[a], "Benchmark": {"SPY": "S&P 500 (SPY)", "TLH": "ICE U.S. Treasury 10-20 Year (TLH)", "VCLT": "Bloomberg U.S. Long Corporate (VCLT)",
-       "QMOM": "Alpha Architect U.S. Quantitative Momentum (QMOM)", "SPLV": "S&P 500 Low Volatility Index (SPLV)", "MEZCLA_CMD": "Mezcla igual ponderada GLD/USO/DBA/SLV/CPER"}[BENCH[a]]} for a in ACTIVOS])
+       "QMOM": "Alpha Architect U.S. Quantitative Momentum (QMOM)", "SPLV": "S&P 500 Low Volatility Index (SPLV)", "MEZCLA_CMD": "Mezcla igual ponderada GLD/USO/DBA/SLV/CPER", "DJP": "Bloomberg Commodity Index Total Return (DJP)"}[BENCH[a]]} for a in ACTIVOS])
 tabla(ws, 5, 2, bm, {"Peso": PCT}, font=F_N)
 m = T["Metricas"]; keep = ["Período", "Serie", "CAGR", "Volatilidad", "Sharpe", "Sortino", "Treynor", "Beta", "Alfa CAPM", "Máx. caída", "Calmar", "VaR 95% mensual", "CVaR 95% mensual", "Tracking error", "Information ratio"]
 put(ws, "B13", "Métricas (USD nominal; Sharpe vs T-Bills)", F_SEC)

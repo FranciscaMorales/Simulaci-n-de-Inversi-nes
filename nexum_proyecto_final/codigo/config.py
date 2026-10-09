@@ -45,7 +45,7 @@ BL_VISTAS = [("Absoluta", {"SPY": 1.0}, 0.06, "Prima por riesgo accionaria de la
 PESOS_APROBADOS = {"SPY": 0.3789, "TLH": 0.1687, "VCLT": 0.1460, "MOM_CMD": 0.0611, "MOM_EQ": 0.0706, "LOW_VOL": 0.1746}
 
 # ---------------- Benchmark de política (índices invertibles por sleeve) ----------------
-BENCH = {"SPY": "SPY", "TLH": "TLH", "VCLT": "VCLT", "MOM_EQ": "QMOM", "LOW_VOL": "SPLV", "MOM_CMD": "MEZCLA_CMD"}
+BENCH = {"SPY": "SPY", "TLH": "TLH", "VCLT": "VCLT", "MOM_EQ": "QMOM", "LOW_VOL": "SPLV", "MOM_CMD": "DJP"}   # commodities: Bloomberg Commodity Index TR (DJP); antes, mezcla de los 5 ETF
 TE_OBJETIVO, TE_MAX, IR_OBJETIVO, ALFA_OBJETIVO = 0.03, 0.04, 0.5, 0.015
 
 # ---------------- Cliente y objetivos (enunciado) ----------------
