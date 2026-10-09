@@ -65,8 +65,9 @@ def rt(t):
     """Retorno total desde nuestro precio de entrada del 14-sep (o el cierre de ese día si no compramos el ETF) al 6-oct."""
     tr, ci = pv["retorno_total"][t], pv["cierre"][t]
     return tr.iloc[-1] / tr.loc["2026-09-14"] * ci.loc["2026-09-14"] / entrada.get(t, ci.loc["2026-09-14"]) - 1
+djp = pd.read_csv(os.path.join(DATOS, "djp_vivo_nasdaq_2026-10-08.csv"), parse_dates=["Date"]).set_index("Date")["Close/Last"].sort_index()   # Nasdaq.com; ETN sin dividendos
 bvivo = {"Renta variable EE.UU.": ("S&P 500 (SPY)", rt("SPY")), "Renta fija larga EE.UU.": ("Bloomberg U.S. Long Gov/Credit (proxy TLH/VCLT 50/50)", 0.5 * rt("TLH") + 0.5 * rt("VCLT")),
-         "Commodities": ("Mezcla de 5 ETF (DJP sin precios en vivo)", np.mean([rt(t) for t in CMD["universo"]])), "Liquidez (reserva)": ("T-Bills 0-3 meses (SGOV)", rt("SGOV"))}
+         "Commodities": ("Bloomberg Commodity Index TR (DJP)", djp.loc["2026-10-06"] / djp.loc["2026-09-14"] - 1), "Liquidez (reserva)": ("T-Bills 0-3 meses (SGOV)", rt("SGOV"))}
 vivo["Benchmark"] = [bvivo[k][0] for k in vivo.index]; vivo["Retorno benchmark"] = [bvivo[k][1] for k in vivo.index]
 vivo["Diferencia (pp)"] = (vivo["Retorno Nexum"] - vivo["Retorno benchmark"]) * 100
 orden = ["Renta variable EE.UU.", "Renta fija larga EE.UU.", "Commodities", "Liquidez (reserva)"]
