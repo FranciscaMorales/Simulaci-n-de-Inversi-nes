@@ -151,7 +151,7 @@ ws.cell(row=12, column=5).value = "Entradas"
 head(ws, 12, 2, ["Año", "Capital", "Aporte", "Entradas", "Educ. Vicente", "Educ. Emilia", "Villarrica", "Herencia", "Salidas", "Flujo neto"])
 for t in range(51):
     r = 13 + t; put(ws, f"B{r}", t, F_N, "0")
-    put(ws, f"C{r}", f"=IF(B{r}=0,{REF['cap']},0)", F_FX, USD0)
+    put(ws, f"C{r}", f"=IF(B{r}=0,{REF['cap']}*(1-'01_Supuestos'!$D${lab2row['Reserva operativa + cambiaria']}),0)", F_FX, USD0)
     put(ws, f"D{r}", f"=IF(AND(B{r}>=1,B{r}<={REF['nap']}),{REF['ap']},0)", F_FX, USD0)
     put(ws, f"E{r}", f"=C{r}+D{r}", F_FX, USD0)
     put(ws, f"F{r}", f"=IF(AND(B{r}>={REF['iv']},B{r}<{REF['iv']}+{REF['carr']}),-{REF['pago']},0)", F_FX, USD0)

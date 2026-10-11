@@ -14,7 +14,7 @@ esta pregunta y cerrar cada sección respondiendo una parte de ella.
 
 ### Lo que define el caso (sugerido para 2.3 o 2.5)
 La familia es rica en patrimonio inmobiliario y en capital humano, pero su patrimonio financiero es acotado
-frente a sus metas. A la tasa libre de riesgo, sus recursos cubren solo 0,61 veces los objetivos: el plan es
+frente a sus metas. A la tasa libre de riesgo, sus recursos cubren solo 0,60 veces los objetivos: el plan es
 factible únicamente si la cartera captura prima por riesgo. Esa tensión entre crecer y proteger lo urgente es
 el hilo de toda la estrategia.
 
@@ -22,10 +22,10 @@ el hilo de toda la estrategia.
 
 | Pregunta de la familia | Nuestra respuesta |
 |---|---|
-| ¿Cuánto necesitamos rentar? | 4,56% real anual (TIR requerida) |
+| ¿Cuánto necesitamos rentar? | 4,65% real anual (TIR requerida sobre los USD 144.000 invertidos) |
 | ¿Qué proponen? | Un núcleo pasivo (SPY, TLH, VCLT) de 69,4% y tres satélites con reglas: Low-Volatility 17,5%, Momentum en acciones 7,1% y Momentum en commodities 6,1%. Pesos de Black-Litterman; reserva de 4% fuera de la cartera |
 | ¿Se cumplen los objetivos? | Educación, prácticamente siempre (~100%, en USD y en UF). Los tres objetivos: 96,0% con retornos 2013-2026 y 46,5% con supuestos prudentes |
-| ¿Por qué tanta diferencia? | Con supuestos prudentes el retorno esperado (4,6% real) apenas iguala al requerido: Villarrica y la herencia quedan en el filo |
+| ¿Por qué tanta diferencia? | Con supuestos prudentes el retorno esperado (4,6% real) queda levemente bajo el requerido: Villarrica y la herencia quedan en el filo |
 | ¿Qué podemos hacer nosotros? | Acordar desde ya el orden de ajuste. Herencia de USD 250 mil y Villarrica 25% menor llevan la probabilidad prospectiva de 46,5% a 74,8% |
 | ¿Por qué no quedarnos con la AGF 85/15? | Rindió más en 2016-2026 (12,7% vs 9,9%), pero con más volatilidad, caídas más profundas y ~26% en tecnología, el mismo riesgo del empleo de Tomás (Nexum ~14%). Hacia adelante, Nexum da más probabilidad de éxito (45,3% vs 38,4% en UF) |
 
@@ -49,7 +49,7 @@ como guion para la defensa.
 | No se hizo Montecarlo (penalización −0,3) | Montecarlo en USD y UF, histórico y prospectivo, con probabilidad por objetivo y palancas | 4.2 |
 | "Maximiza la probabilidad" sin cálculo | Se reportan 96,0% (histórico), 46,5% (prospectivo) y 74,8% con palancas | 1, 4.2, 7 |
 | No se justifica la herencia sobre la propiedad | Orden Educación → Villarrica → Herencia, con justificación | 2.4 |
-| No se calcula retorno requerido ni factibilidad | TIR requerida 4,56% real; cobertura de recursos 0,61 veces | 2.5 |
+| No se calcula retorno requerido ni factibilidad | TIR requerida 4,65% real; cobertura de recursos 0,60 veces | 2.5 |
 | Educación modelada como dos pagos únicos | Plan de desembolsos de 7 pagos anuales (años 14-20) | 2.4 |
 | No se cuantifica riesgo-retorno ni se compara con la AGF | Métricas de la cartera y comparación con la AGF 85/15 | 2.7, 3.6 |
 | Grable-Lytton respondido por ChatGPT | No se usan respuestas simuladas; el cuestionario se aplicará a los clientes | 2.3 |

@@ -14,7 +14,7 @@ def pagos_educacion():
     return p
 
 def flujos(n_aportes=N_APORTES, crec_arancel=0.0, aportes_nominales=False, herencia=HERENCIA_USD, villarrica=VILLARRICA_UF, infl=0.025):
-    cf = np.zeros(ANO_HERENCIA + 1); cf[0] = CAPITAL
+    cf = np.zeros(ANO_HERENCIA + 1); cf[0] = CAPITAL * (1 - RESERVA)   # capital invertido: la reserva de 4% no financia metas (oct-2026)
     for t in range(1, n_aportes + 1): cf[t] += APORTE / ((1 + infl) ** t if aportes_nominales else 1)
     for y, v in pagos_educacion().items(): cf[y] -= v * (1 + crec_arancel) ** y
     cf[ANO_VILLARRICA] -= villarrica * USD_UF; cf[ANO_HERENCIA] -= herencia
@@ -37,7 +37,7 @@ def tabla_tir():
 
 def factibilidad(r_libre=0.025):
     cf = flujos()
-    ent = np.zeros(len(cf)); ent[0] = CAPITAL; ent[1:N_APORTES + 1] = APORTE        # entradas brutas
+    ent = np.zeros(len(cf)); ent[0] = CAPITAL * (1 - RESERVA); ent[1:N_APORTES + 1] = APORTE        # entradas brutas
     recursos = vp(ent, r_libre); objetivos = vp(ent - cf, r_libre)                   # salidas brutas = entradas - neto
     t = tir(cf); edu = sum(v / (1 + t) ** y for y, v in pagos_educacion().items())
     vil = VILLARRICA_UF * USD_UF / (1 + t) ** ANO_VILLARRICA; her = HERENCIA_USD / (1 + t) ** ANO_HERENCIA
