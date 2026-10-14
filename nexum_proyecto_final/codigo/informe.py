@@ -284,7 +284,7 @@ B(["Clasificación sectorial actual (no histórica) en el límite sectorial: ses
    "Montecarlo: bootstrap independiente (no captura regímenes ni autocorrelación); los supuestos prospectivos son propios, no pronósticos."])
 
 # ================= 5. IMPLEMENTACIÓN =================
-d.add_page_break(); H("5. Implementación en StockTrak (al 5-oct-2026)")
+d.add_page_break(); H("5. Implementación en StockTrak (al 6-oct-2026)")
 P("La cartera se implementó el 14-sep-2026 con los pesos aprobados. Decisiones relevantes durante la ejecución:")
 B([("Rebalanceo de fin de septiembre: ", "Momentum se llevó a peso igual; Moderna se redujo de 12 a 5 acciones, asegurando ~USD 225 de ganancia, con un stop móvil sobre el costo para las restantes."),
    ("Low-Volatility: ", "se redujo utilities y real estate de 50% a ~29% del sleeve (salieron Realty Income y Duke Energy), por la sensibilidad a tasas observada; entraron PG, RSG y SNA siguiendo el ranking."),
@@ -296,7 +296,9 @@ TB(["Fecha", "Sleeve", "Desviación", "Motivo / tratamiento"], [
     ["14-sep", "Commodities", "Compra de USO aunque al 31-ago ningún commodity calificaba", "La señal se recalculó con precios del 14-sep (día de la implementación). Se vendió el 2-oct; la señal de octubre confirmó su salida"],
     ["21-sep", "Low-Volatility", "Se reemplazaron BRK/B y MCD por AFL y FRT", "FRT entraba a la selección de la revisión del 18-sep (en lugar de O). AFL y las salidas de BRK/B y MCD no corresponden a la regla: desviación discrecional, se corrige en el rebalanceo de fin de octubre"],
     ["30-sep", "Low-Volatility", "Salen O y DUK; entran PG, RSG y SNA; se excluye MCD", "Reducir utilities y REITs (sensibles a tasas) de 50% a ~29% del sleeve; MCD excluida por deterioro de tendencia. Reemplazos en orden del ranking"],
-    ["2-oct", "Momentum / Commodities", "Venta de MPC, VLO y USO", "Reducir la exposición conjunta al petróleo; MPC y VLO seguían en la señal (decisión de riesgo)"]], w=[1.5, 2.6, 5.4, 6.5], sz=7.5)
+    ["2-oct", "Momentum / Commodities", "Venta de MPC, VLO y USO", "Reducir la exposición conjunta al petróleo; MPC y VLO seguían en la señal (decisión de riesgo)"],
+    ["6-oct", "Momentum", "Se pasa de 10 a 7 acciones (máximo 2 por sector)", "Con ~USD 10.000 en el sleeve, las comisiones costaban ~2,4 puntos; con 7 acciones el backtest rinde 17,4% vs 16,2%. Única regla modificada: desde aquí no se cambian reglas, para validar la estrategia estudiada"],
+    ["6-oct", "Momentum", "HUM reemplaza a CRL", "CRL tuvo una reversión intradía de 11%; la regla de ejecución indica postergar la compra, no reemplazarla. Desviación discrecional"]], w=[1.5, 2.6, 5.4, 6.5], sz=7.5)
 P("Momentum es el sleeve con mejor desempeño en vivo (≈ +3,7% desde el 14-sep frente a ≈ +2,4% de QMOM). La cartera total se ve afectada por la subida de la tasa a 10 años a 5,3%, que golpea al núcleo de renta fija larga (~30% de la cartera). Es el principal riesgo de corto plazo y está identificado en la sección 6.", it=False)
 vc = AD["Vivo_por_clase"].set_index("Clase")
 TB(["Clase", "Invertido el 14-sep", "Resultado (USD)", "Retorno Nexum", "Benchmark", "Retorno benchmark", "Diferencia"],
@@ -306,11 +308,27 @@ TB(["Clase", "Invertido el 14-sep", "Resultado (USD)", "Retorno Nexum", "Benchma
 rvv, cmv = vc.loc["Renta variable EE.UU."], vc.loc["Commodities"]
 P(f"Por clase de activo: la renta fija replica su benchmark, como corresponde a un núcleo pasivo; la renta variable queda {n_(-rvv['Diferencia (pp)'],1)} puntos bajo el S&P 500, en parte por las comisiones ({int(rvv['Operaciones'])} operaciones, USD {n_(10*rvv['Operaciones'],0)}) y en parte por el sesgo defensivo de Low-Volatility en un mercado al alza; commodities queda {n_(-cmv['Diferencia (pp)'],1)} puntos bajo su benchmark por la pérdida en USO, ya liquidado.")
 
+H("Por qué la cartera no rindió como esperábamos", 3)
+rfv, lqv = vc.loc["Renta fija larga EE.UU."], vc.loc["Liquidez (reserva)"]
+tot = vc["Resultado (USD)"].sum(); com = 10 * vc["Operaciones"].sum()
+P(f"Entre el 14-sep y el 6-oct la cartera perdió USD {n_(-tot,0)} ({p_(tot/CAPITAL,2)} sobre el capital), mientras el S&P 500 subió {p_(rvv['Retorno benchmark'],1)}. La pérdida tiene tres explicaciones, todas medibles:")
+TB(["Bloque", "Resultado (USD)", "Qué pasó"], [
+    ["Bonos largos (TLH + VCLT, ~31%)", n_(rfv["Resultado (USD)"], 0), f"La tasa a 10 años subió hasta 5,3%, su nivel más alto desde 2002, y los bonos cayeron {p_(-rfv['Retorno Nexum'],1)}, lo mismo que su índice. No fue un error de ejecución: es el riesgo de duración que asumimos"],
+    ["Commodities (~6%)", n_(cmv["Resultado (USD)"], 0), f"USO cayó con el petróleo y se vendió el 2-oct; el sleeve perdió {p_(-cmv['Retorno Nexum'],1)} frente a {p_(-cmv['Retorno benchmark'],1)} de DJP"],
+    ["Acciones (~62%)", n_(rvv["Resultado (USD)"], 0), f"Ganaron {p_(rvv['Retorno Nexum'],1)}, menos que el S&P 500: Low-Volatility es defensiva en un mercado al alza y las comisiones restan"],
+    ["Liquidez (SGOV)", n_(lqv["Resultado (USD)"], 0), "Rinde como las letras del Tesoro"]], w=[4.2, 2.4, 9.4], sz=8,
+   nota=f"Los bloques suman USD {n_(tot,0)}, igual que StockTrak. Incluyen dividendos y comisiones ({int(vc['Operaciones'].sum())} operaciones, USD {n_(com,0)}); sin comisiones, la cartera iría {p_((tot+com)/CAPITAL,1)}.")
+P("Lo que esperábamos y lo que pasó. La estrategia se diseñó para metas a 14-50 años, no para ganarle al S&P 500 en cuatro semanas. Los bonos largos se eligieron porque protegen cuando las acciones caen (en febrero y marzo de 2020 subieron 2,3% mientras el S&P 500 caía 19%); su costo es caer cuando suben las tasas, que es exactamente lo que ocurrió en septiembre. La beta realizada de la cartera (0,58) muestra que se movió menos que el mercado, como se diseñó, y el tracking error frente a la política (2,1%) está dentro del objetivo de 3%.")
+B([("Diversificar se nota en los días malos: ", "el 28-sep el S&P 500 cayó 0,74% y Low-Volatility quedó prácticamente plana (−0,09%)."),
+   ("Las reglas evitan decisiones por impulso: ", "la única venta fuera de la señal (el petróleo, 2-oct) se tomó por riesgo de concentración y quedó documentada con su motivo."),
+   ("En una cartera chica las comisiones pesan: ", "por eso Momentum pasó de 10 a 7 acciones; fue la única regla modificada."),
+   ("Validar antes que ajustar: ", "aunque hoy commodities quede invertido solo en cobre, no se cambian las reglas a mitad de la simulación; el objetivo es probar la estrategia que se estudió, no optimizarla mirando el resultado.")])
+
 # ================= 6. RIESGOS =================
 H("6. Riesgos principales y mitigantes")
 TB(["Riesgo", "Exposición", "Mitigante"], [
     ["Tasas de interés", "TLH + VCLT ≈ 31%; más Low-Vol en utilities/REITs", "Banda de rebalanceo; límite a utilities/REITs; revisión de la duración en la revisión anual"],
-    ["Retorno de mercado menor al requerido", "Retorno esperado ≈ requerido", "Palancas acordadas: herencia y luego Villarrica; nunca Educación"],
+    ["Retorno de mercado menor al requerido", "Retorno esperado (4,6%) levemente bajo el requerido", "Palancas acordadas: herencia y luego Villarrica; nunca Educación"],
     ["Concentración tecnológica / capital humano", "Empleo de Tomás en software", "Límite de 2 acciones por sector en el satélite; tecnología ~14% vs ~26% en la AGF"],
     ["Caídas abruptas de Momentum", "7% de la cartera, volatilidad ~24%", "Peso acotado, peso igual, stops de emergencia"],
     ["Tipo de cambio", "Objetivos en UF/CLP, activos en USD", "Forward de venta de USD 104.000 a un año (~70%, cerca de la cobertura de mínimo riesgo en pesos); cobertura natural; simulaciones en UF; reserva cambiaria de 2%"],
