@@ -98,13 +98,14 @@ TB(["Control de cumplimiento (CMF / Ley 19.913)", "Meta medible"], [
     ["Actualización del perfil e idoneidad de los instrumentos", "Anual o ante un cambio material"],
     ["Conservación de registros", "Mínimo 5 años"]], w=[11.5, 4.5])
 H("2.3 Perfil del inversionista", 2)
-P("María Ignacia (40 años, abogada en consumo masivo) y Tomás (46, ingeniero en software) tienen dos hijos (Vicente, 4; Emilia, 2), ingresos estables y educación financiera media, sin experiencia en derivados ni criptoactivos. El perfil distingue dos dimensiones:")
+P("María Ignacia (40 años, abogada en consumo masivo) y Tomás (46, ingeniero en software) tienen dos hijos (Vicente, 4; Emilia, 2), ingresos estables y educación financiera media, sin experiencia en derivados ni criptoactivos. El perfil separa lo que pueden asumir (capacidad) de lo que quieren asumir (disposición) y considera además su capital humano y la aversión al riesgo implícita:")
 TB(["Dimensión", "Evidencia", "Conclusión"], [
     ["Capacidad de riesgo (objetiva)", f"Capital USD 150.000 + valor presente de los aportes (~USD 150.000 a 2,5% real); sin necesidades de liquidez hasta el año 14; horizonte hasta 50 años", "Alta en el largo plazo; decreciente frente a Educación (años 14-20)"],
-    ["Disposición al riesgo (conductual)", "Toleran hoy 85% en activos de riesgo (cartera AGF) y piden activamente commodities y alternativos", "Moderada-agresiva; renta variable de 60-65%"],
+    ["Disposición al riesgo (conductual)", "Cuestionario de Grable y Lytton (1999): 30 de 47 puntos. Aceptan riesgo después de informarse y asocian riesgo con oportunidad, pero prefieren una ganancia segura frente a una apuesta y se declaran solo algo cómodos invirtiendo en acciones. Hoy tienen 85% en activos de riesgo en la AGF y piden commodities y alternativos", "Moderada: toman riesgo para crecer, sin especular; renta variable de 60-65%"],
     ["Capital humano", "El ingreso de Tomás depende del sector software (se comporta como una acción tecnológica); el de María Ignacia, de consumo masivo (como un bono)", "Limitar tecnología: ~14% en Nexum vs ~26% en la AGF"],
-    ["Aversión al riesgo (A)", f"A del inversionista de mercado (S&P 500, 2013-2026) = {n_(av[0],1)}; A implícito en la cartera recomendada = {n_(av[1],1)}; δ de Black-Litterman = {n_(av[2],1)}", "El cliente acepta más riesgo que el inversionista promedio, coherente con su horizonte"]], w=[3.4, 7.6, 5])
-P("El cuestionario de tolerancia al riesgo (Grable y Lytton) se aplicará directamente a ambos clientes en la reunión de inicio; si su resultado difiere de este perfil, se revisará el IPS. No se usan respuestas simuladas.", it=True, sz=9)
+    ["Aversión al riesgo (A)", f"A del inversionista de mercado (S&P 500, 2013-2026) = {n_(av[0],1)}; A implícito en la cartera recomendada = {n_(av[1],1)}; δ de Black-Litterman = {n_(av[2],1)}", "La cartera pide algo más de riesgo que el promedio del mercado; lo acotan los límites de volatilidad (10-12%) y de caída (25%)"]], w=[3.4, 7.6, 5])
+P("Conclusión: perfil moderado, el mismo del IPS de la Parte I. La capacidad es alta en el largo plazo, pero la acota Educación, un objetivo rígido que empieza en el año 14; la disposición es moderada. El perfil se traduce en 60-65% de renta variable, cerca de 30% de renta fija larga, volatilidad anual de 10-12% y una caída máxima tolerada de 25%.")
+P("El cuestionario de Grable y Lytton (13 preguntas, de 13 a 47 puntos) se respondió con inteligencia artificial a partir del perfil del enunciado, con autorización del profesor, porque los clientes son ficticios. El resultado se contrastó con el cuestionario de perfil de Banchile Inversiones. Con 30 puntos, el puntaje queda en el límite superior de la tolerancia media; como Educación limita la capacidad y los clientes no tienen experiencia en derivados, el perfil final es moderado. Las respuestas están en el Anexo D.", it=True, sz=9)
 H("2.4 Objetivos, prioridad y horizontes", 2)
 pd_ = T["Plan_desembolsos"]
 TB(["Prioridad", "Objetivo (moneda del cliente)", "Años", "UF", "USD reales", "Flexibilidad"], [
@@ -132,7 +133,7 @@ TB(["Métrica (2016-2026, USD)", "Nexum", "Benchmark", "AGF 85/15", "S&P 500"],
 P(f"Retorno esperado vs requerido: el retorno histórico real 2013-2026 fue {p_(g('Nexum','Hist','USD','Retorno real anual'))}, muy sobre el requerido. Con supuestos prospectivos (tasa real ~2,5% más primas moderadas; sección 4.3) el retorno real esperado es {p_(g('Nexum','Prosp','USD','Retorno real anual'))}, levemente bajo el requerido de {p_(fac['TIR requerida'],2)}: el plan es exigente y depende de las palancas. Nivel de riesgo aceptable: volatilidad anual de 10-12%, máxima caída tolerada de 25% y probabilidad de Educación de al menos 90%.")
 rcd = T["Contribucion_riesgo"]
 FIGURA("f8_riesgo.png", "Figura 3. Peso de cada activo frente a su contribución al riesgo total (pesos aprobados, covarianza 2013-2026). Fuente: hoja 06 del modelo.")
-P(f"Contribución al riesgo: el S&P 500 pesa {p_(rcd.iloc[0]['Peso'])} pero aporta {p_(rcd.iloc[0]['Contribución al riesgo (%)'])} del riesgo; Momentum pesa {p_(rcd.iloc[4]['Peso'])} y aporta {p_(rcd.iloc[4]['Contribución al riesgo (%)'])}. Los bonos del Tesoro diversifican: con {p_(rcd.iloc[1]['Peso'])} del capital aportan solo {p_(rcd.iloc[1]['Contribución al riesgo (%)'])}. El presupuesto de riesgo está dominado por la renta variable, coherente con un perfil moderado-agresivo que necesita prima por riesgo para cumplir sus objetivos.")
+P(f"Contribución al riesgo: el S&P 500 pesa {p_(rcd.iloc[0]['Peso'])} pero aporta {p_(rcd.iloc[0]['Contribución al riesgo (%)'])} del riesgo; Momentum pesa {p_(rcd.iloc[4]['Peso'])} y aporta {p_(rcd.iloc[4]['Contribución al riesgo (%)'])}. Los bonos del Tesoro diversifican: con {p_(rcd.iloc[1]['Peso'])} del capital aportan solo {p_(rcd.iloc[1]['Contribución al riesgo (%)'])}. El presupuesto de riesgo está dominado por la renta variable, coherente con un perfil moderado de horizonte largo que necesita prima por riesgo para cumplir sus objetivos.")
 FIGURA("f1_crecimiento.png", "Figura 4. Crecimiento de USD 100 (2016-2026). Fuente: resultados/retornos_cartera_benchmark.csv.")
 FIGURA("f2_caidas.png", "Figura 5. Caídas desde el máximo: Nexum frente a la cartera actual de la AGF.")
 H("2.8 Selección, seguimiento y rebalanceo", 2)
@@ -392,6 +393,8 @@ for q, a in [
   f"El perfil excluye derivados complejos, apalancamiento y especulación. Un forward de monedas es el derivado más simple, se usa solo para cubrir y el monto es menor que la cartera, así que no apalanca. Cubre {p_(fc['Cobertura sobre el valor al 28-sep'],0)} de la cartera: más cobertura no reduce el riesgo en pesos, porque el peso ya se deprecia cuando caen los mercados. Su costo es bajo ({p_(-fc['Puntos como % del spot (≈ tasa CLP − tasa USD)'],2)} del monto) y su riesgo es de liquidez: si el dólar sube hay que pagar la compensación, pero en ese escenario la cartera vale más en pesos."),
  ("¿Contra qué se evalúa cada clase de activo?",
   f"Renta variable contra el S&P 500, renta fija larga contra el Bloomberg U.S. Long Government/Credit Index (el que sigue el ETF BLV), commodities contra el Bloomberg Commodity Index (DJP) y la reserva contra T-Bills. Frente a ese benchmark, Nexum rindió {p_(bkv('2016-2026','Cartera Nexum','CAGR'))} vs {p_(bkv('2016-2026','Benchmark por clase','CAGR'))} en 2016-2026, con menos volatilidad y caídas más bajas: el satélite de renta variable baja el riesgo, no busca superar al índice en un mercado alcista."),
+ ("Si el Grable-Lytton da 30 puntos y hoy tienen 85% en riesgo, ¿por qué el perfil es moderado y no agresivo?",
+  "Porque el perfil combina disposición y capacidad. El cuestionario muestra disposición a tomar riesgo después de informarse, pero también preferencia por la ganancia segura y poca experiencia en acciones. La capacidad es alta a 50 años, pero Educación es rígida y empieza en el año 14. El 85% de la AGF muestra que soportan volatilidad, pero esa cartera no considera que Educación empieza en el año 14. Por eso recomendamos 60-65% de renta variable, con volatilidad de 10-12%."),
  ("¿Por qué no usan Markowitz si tiene mayor Sharpe?",
   "Porque ese Sharpe es dentro de muestra. En la prueba fuera de muestra (calibrar con 2013-2019 y evaluar 2020-2026), Markowitz cae a 0,45, mientras que Black-Litterman calibrado con la misma información logra 0,65."),
  ("¿El modelo que presentan es el mismo que operan en StockTrak?",
@@ -403,4 +406,21 @@ B(["codigo/config.py: todos los parámetros. codigo/estrategias.py: backtests. c
    "codigo/run_all.py corre todo; codigo/excel_modelo.py genera el Excel; codigo/figuras.py e informe.py, este documento; codigo/senales.py, las señales de operación.",
    "codigo/analisis_adicional.py: benchmark por clase de activo, resultado en vivo por clase, forward USD/CLP, bandas de rebalanceo y activos adicionales (resultados/analisis_adicional.xlsx).",
    "La versión portada de los backtests reproduce exactamente los resultados del modelo anterior (diferencia máxima 10⁻¹⁶) antes de aplicar las correcciones."])
+H("Anexo D. Cuestionario de Grable y Lytton (1999)")
+P("Respuestas obtenidas con inteligencia artificial a partir del perfil del cliente del enunciado, con autorización del profesor (los clientes son ficticios). Cada pregunta asigna de 1 a 4 puntos; el total va de 13 a 47.")
+TB(["N°", "Pregunta (resumen)", "Respuesta", "Puntos"], [
+    ["1", "¿Cómo lo describiría su mejor amigo frente al riesgo?", "Dispuesto a tomar riesgos después de investigar", "3"],
+    ["2", "Concurso de televisión: ¿qué premio elige?", "50% de probabilidad de ganar USD 5.000", "2"],
+    ["3", "Pierde el trabajo tres semanas antes de unas vacaciones soñadas", "Toma unas vacaciones mucho más modestas", "2"],
+    ["4", "Recibe USD 20.000 inesperados para invertir", "Acciones o fondos de acciones", "3"],
+    ["5", "¿Qué tan cómodo se siente invirtiendo en acciones?", "Algo cómodo", "2"],
+    ["6", "¿Qué palabra asocia primero con \"riesgo\"?", "Oportunidad", "3"],
+    ["7", "Se espera que suban los activos reales y caigan los bonos; usted tiene bonos", "Vende los bonos: mitad a money market y mitad a activos reales", "2"],
+    ["8", "Elija entre cuatro inversiones según su mejor y peor resultado", "Ganancia de USD 2.600 en el mejor caso; pérdida de USD 800 en el peor", "3"],
+    ["9", "Le dan USD 1.000: ¿ganancia segura o apuesta?", "Ganancia segura de USD 500", "1"],
+    ["10", "Le dan USD 2.000: ¿pérdida segura o apuesta?", "50% de perder USD 1.000 y 50% de no perder nada", "3"],
+    ["11", "Hereda USD 100.000 y debe ponerlos en una sola alternativa", "Fondo mutuo de acciones y bonos", "2"],
+    ["12", "¿Cómo invertiría USD 20.000?", "30% bajo riesgo, 40% riesgo medio y 30% alto riesgo", "2"],
+    ["13", "Mina de oro con 20% de éxito que paga 50 a 100 veces", "Un mes de sueldo", "2"],
+    ["", "Total", "", "30"]], w=[1, 6.5, 7, 1.5])
 out = os.path.join(BASE, "informe", "Informe_Final_Nexum.docx"); d.save(out); print("OK", out)

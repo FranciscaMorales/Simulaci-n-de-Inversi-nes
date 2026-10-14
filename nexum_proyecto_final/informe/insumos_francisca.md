@@ -52,7 +52,7 @@ como guion para la defensa.
 | No se calcula retorno requerido ni factibilidad | TIR requerida 4,65% real; cobertura de recursos 0,60 veces | 2.5 |
 | Educación modelada como dos pagos únicos | Plan de desembolsos de 7 pagos anuales (años 14-20) | 2.4 |
 | No se cuantifica riesgo-retorno ni se compara con la AGF | Métricas de la cartera y comparación con la AGF 85/15 | 2.7, 3.6 |
-| Grable-Lytton respondido por ChatGPT | No se usan respuestas simuladas; el cuestionario se aplicará a los clientes | 2.3 |
+| Grable-Lytton respondido por ChatGPT | Se mantiene con IA (autorizado por el profesor: clientes ficticios), 30/47 puntos, y se combina con la capacidad de riesgo: perfil moderado | 2.3, Anexo D |
 | Casa de Santiago valorizada en "USD 30.000" | UF 30.000; solo UF 15.000 van a Villarrica | 2.4 |
 | Sin literatura por estrategia | Fundamento y discusión crítica por estrategia | 3.2 |
 | BAB mal implementado | Betting Against Beta eliminado | 3.3 |
@@ -66,4 +66,3 @@ como guion para la defensa.
 ## 3. Pendientes que no resuelve este archivo
 - Confirmar en el historial de StockTrak la comisión real por operación.
 - Escribir la justificación de AFL (21-sep) o dejarla como desviación discrecional, como ya está en la sección 5.
-- Aplicar el cuestionario de Grable-Lytton a los clientes.
