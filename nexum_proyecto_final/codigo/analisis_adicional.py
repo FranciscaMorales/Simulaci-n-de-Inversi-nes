@@ -1,6 +1,6 @@
 """Análisis agregados en octubre de 2026 (trabajo de Francisca, sobre el modelo oficial):
   1. Benchmark por clase de activo: backtest 2013-2026 y 2016-2026, atribución del retorno activo y decisión de duración.
-  2. Resultado en vivo por clase de activo desde el 14-sep (exports de StockTrak del 6-oct).
+  2. Resultado en vivo por clase de activo desde el 14-sep (último export de StockTrak).
   3. Forward USD/CLP firmado el 28-sep-2026: condiciones, pagos al vencimiento y simulación de su efecto.
   4. Reglas de rebalanceo: bandas, regla de commodities y activos adicionales (AGG, EFA).
 Lee resultados/estado.pkl (run_all.py) y escribe resultados/analisis_adicional.xlsx y resultados/adicional.pkl, que usa informe.py.
@@ -47,27 +47,26 @@ for lab, r in [("Renta fija Nexum (TLH + VCLT, duración ~14)", rf_n), ("Bonos E
                 "Feb-mar 2020 (S&P 500 −19%)": (1 + r.loc["2020-02":"2020-03"]).prod() - 1, "2022 (alza de tasas)": (1 + r.loc["2022"]).prod() - 1})
 T["Duracion_renta_fija"] = pd.DataFrame(dur)
 
-# ---------------- 2. En vivo por clase de activo (14-sep a 6-oct) ----------------
-ST = os.path.join(DATOS, "stocktrak_2026-10-06")
+# ---------------- 2. En vivo por clase de activo (14-sep a la fecha del último export) ----------------
+CORTE = "2026-10-14"; ST = os.path.join(DATOS, f"stocktrak_{CORTE}")
 tx = pd.read_csv(os.path.join(ST, "TransactionHistory.csv")); pos = pd.read_csv(os.path.join(ST, "OpenPosition.csv"))
 tx["monto"] = tx.Amount.str.replace(r"[\$,]", "", regex=True).astype(float); tx["fecha"] = pd.to_datetime(tx.CreateDate.str[:10])
 tx["op"] = tx.TransactionType.str.contains("Buy|Sell")
-clase_de = lambda s: "Renta fija larga EE.UU." if s in ("TLH", "VCLT") else "Commodities" if s in ("USO", "CPER") else "Liquidez (reserva)" if s == "SGOV" else "Renta variable EE.UU."
+clase_de = lambda s: "Renta fija larga EE.UU." if s in ("TLH", "VCLT") else "Commodities" if s in ("USO", "CPER", "DJP") else "Liquidez (reserva)" if s == "SGOV" else "Renta variable EE.UU."
 tx["clase"] = tx.Symbol.map(clase_de); pos["clase"] = pos.Symbol.map(clase_de)
 compra14 = -tx[(tx.fecha == "2026-09-14") & tx.TransactionType.str.contains("Buy")].groupby("clase").monto.sum()
 vivo = pd.DataFrame({"Invertido el 14-sep": compra14, "Flujos": tx.groupby("clase").monto.sum(), "Operaciones": tx[tx.op].groupby("clase").size(),
-                     "Valor al 6-oct": pos.groupby("clase").MarketValue.sum()}).fillna(0)
-vivo["Resultado (USD)"] = vivo["Valor al 6-oct"] + vivo["Flujos"] - COMISION_STOCKTRAK * vivo["Operaciones"]
-vivo["Retorno Nexum"] = vivo["Resultado (USD)"] / vivo["Invertido el 14-sep"]
-pv = pd.read_csv(os.path.join(DATOS, "precios_vivo_2026-10-06.csv"), header=[0, 1], index_col=0, parse_dates=True)
+                     "Valor final": pos.groupby("clase").MarketValue.sum()}).fillna(0)
+vivo["Resultado (USD)"] = vivo["Valor final"] + vivo["Flujos"] - COMISION_STOCKTRAK * vivo["Operaciones"]
+vivo["Retorno Nexum"] = vivo["Invertido el 14-sep"].pipe(lambda inv: vivo["Resultado (USD)"] / inv)
+# Benchmarks: precio de entrada del 14-sep -> último precio del export + dividendos por acción cobrados (retorno total)
 entrada = tx[(tx.fecha == "2026-09-14") & tx.TransactionType.str.contains("Buy")].set_index("Symbol").Price.str.replace("$", "").astype(float)
-def rt(t):
-    """Retorno total desde nuestro precio de entrada del 14-sep (o el cierre de ese día si no compramos el ETF) al 6-oct."""
-    tr, ci = pv["retorno_total"][t], pv["cierre"][t]
-    return tr.iloc[-1] / tr.loc["2026-09-14"] * ci.loc["2026-09-14"] / entrada.get(t, ci.loc["2026-09-14"]) - 1
-djp = pd.read_csv(os.path.join(DATOS, "djp_vivo_nasdaq_2026-10-08.csv"), parse_dates=["Date"]).set_index("Date")["Close/Last"].sort_index()   # Nasdaq.com; ETN sin dividendos
+ultimo = pos.set_index("Symbol").LastPrice
+div = tx[tx.TransactionType == "Dividends"].assign(dps=lambda t: t.monto / t.Quantity).groupby("Symbol").dps.sum()
+rt = lambda t: (ultimo[t] + div.get(t, 0.0)) / entrada[t] - 1
+DJP_14SEP = 52.84   # cierre del 14-sep (Nasdaq.com, datos/djp_vivo_nasdaq_2026-10-08.csv); ETN sin dividendos
 bvivo = {"Renta variable EE.UU.": ("S&P 500 (SPY)", rt("SPY")), "Renta fija larga EE.UU.": ("Bloomberg U.S. Long Gov/Credit (proxy TLH/VCLT 50/50)", 0.5 * rt("TLH") + 0.5 * rt("VCLT")),
-         "Commodities": ("Bloomberg Commodity Index TR (DJP)", djp.loc["2026-10-06"] / djp.loc["2026-09-14"] - 1), "Liquidez (reserva)": ("T-Bills 0-3 meses (SGOV)", rt("SGOV"))}
+         "Commodities": ("Bloomberg Commodity Index TR (DJP)", ultimo["DJP"] / DJP_14SEP - 1), "Liquidez (reserva)": ("T-Bills 0-3 meses (SGOV)", rt("SGOV"))}
 vivo["Benchmark"] = [bvivo[k][0] for k in vivo.index]; vivo["Retorno benchmark"] = [bvivo[k][1] for k in vivo.index]
 vivo["Diferencia (pp)"] = (vivo["Retorno Nexum"] - vivo["Retorno benchmark"]) * 100
 orden = ["Renta variable EE.UU.", "Renta fija larga EE.UU.", "Commodities", "Liquidez (reserva)"]
