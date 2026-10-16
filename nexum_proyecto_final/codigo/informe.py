@@ -364,9 +364,9 @@ for ref in ["Ang, A., Hodrick, R., Xing, Y. y Zhang, X. (2006). The Cross-Sectio
  "Markowitz, H. (1952). Portfolio Selection. Journal of Finance, 7(1), 77-91.",
  "McLean, R. y Pontiff, J. (2016). Does Academic Research Destroy Stock Return Predictability? Journal of Finance, 71(1), 5-32.",
  "Miffre, J. y Rallis, G. (2007). Momentum Strategies in Commodity Futures Markets. Journal of Banking & Finance, 31(6), 1863-1886.",
- "Moskowitz, T., Ooi, Y. y Pedersen, L. (2012). Time Series Momentum. Journal of Financial Economics, 104(2), 228-250."]:
+ "Moskowitz, T., Ooi, Y. y Pedersen, L. (2012). Time Series Momentum. Journal of Financial Economics, 104(2), 228-250.",
  "Quantpedia. (s. f.-a). Momentum Effect in Commodities. https://quantpedia.com/strategies/momentum-effect-in-commodities",
- "Quantpedia. (s. f.-b). Momentum Factor Effect in Stocks. https://quantpedia.com/strategies/momentum-factor-effect-in-stocks",
+ "Quantpedia. (s. f.-b). Momentum Factor Effect in Stocks. https://quantpedia.com/strategies/momentum-factor-effect-in-stocks"]:
     p = d.add_paragraph(ref); p.paragraph_format.left_indent = Cm(0.6); p.paragraph_format.first_line_indent = Cm(-0.6); p.runs[0].font.size = Pt(8.5)
 
 # ================= ANEXOS =================
