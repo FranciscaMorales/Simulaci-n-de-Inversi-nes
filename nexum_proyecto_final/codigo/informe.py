@@ -160,11 +160,11 @@ P("El núcleo pasivo (69%) captura la prima de mercado y de plazo a bajo costo y
 H("3.2 Estrategias activas: evidencia y resultados", 2)
 TB(["Estrategia", "Implementación", "Evidencia académica", "Riesgo/retorno teórico"], [
     ["Momentum en acciones", "Top 10 del S&P 500 por 50% retorno 6m + 50% retorno 12m; filtros de tendencia y liquidez; máx. 25% por sector; mensual",
-     "Jegadeesh y Titman (1993); Carhart (1997); Asness, Moskowitz y Pedersen (2013)", "Ganadores menos perdedores ~1% mensual (J&T, 1965-1989); caídas abruptas en rebotes del mercado (Daniel y Moskowitz, 2016)"],
+     "Jegadeesh y Titman (1993); Carhart (1997); Asness, Moskowitz y Pedersen (2013); ficha en Quantpedia (s. f.-b)", "Ganadores menos perdedores ~1% mensual (J&T, 1965-1989); caídas abruptas en rebotes del mercado (Daniel y Moskowitz, 2016)"],
     ["Low-Volatility", "Top 10 del S&P 500 por menor volatilidad 12m; peso igual; máx. 25% por sector; solo compras",
      "Haugen y Heins (1975); Ang et al. (2006); Blitz y van Vliet (2007); Baker, Bradley y Wurgler (2011)", "Retorno similar al mercado con ~30% menos volatilidad; beta 0,5-0,7"],
     ["Momentum en commodities", "GLD, USO, DBA, SLV, CPER: compra los que superan filtros de tendencia 3/6/12 meses y media de 200 días, con vol. < 50%",
-     "Erb y Harvey (2006); Miffre y Rallis (2007); Moskowitz, Ooi y Pedersen (2012)", "Prima del orden de 9% anual en futuros (Miffre y Rallis); baja correlación con acciones y bonos"]], w=[2.8, 5, 4.2, 4.2], sz=8)
+     "Erb y Harvey (2006); Miffre y Rallis (2007); Moskowitz, Ooi y Pedersen (2012); ficha en Quantpedia (s. f.-a)", "Prima del orden de 9% anual en futuros (Miffre y Rallis); baja correlación con acciones y bonos"]], w=[2.8, 5, 4.2, 4.2], sz=8)
 TB(["Estrategia (2016-2026)", "Benchmark", "Retorno anual", "Volatilidad", "Sharpe", "Beta", "Máx. caída", "TE", "IR"],
    [[NOM, BEN, p_(esv(NOM, "CAGR")), p_(esv(NOM, "Volatilidad")), n_(esv(NOM, "Sharpe")), n_(esv(NOM, "Beta")), p_(esv(NOM, "Máx. caída")), p_(esv(NOM, "Tracking error")), n_(esv(NOM, "Information ratio"))]
     for NOM, BEN in [("Momentum en acciones", "QMOM"), ("Low-Volatility", "SPLV"), ("Momentum en commodities", "DJP")]], w=[3.6, 2.2, 1.7, 1.7, 1.3, 1.2, 1.7, 1.3, 1.3], sz=8)
@@ -365,6 +365,8 @@ for ref in ["Ang, A., Hodrick, R., Xing, Y. y Zhang, X. (2006). The Cross-Sectio
  "McLean, R. y Pontiff, J. (2016). Does Academic Research Destroy Stock Return Predictability? Journal of Finance, 71(1), 5-32.",
  "Miffre, J. y Rallis, G. (2007). Momentum Strategies in Commodity Futures Markets. Journal of Banking & Finance, 31(6), 1863-1886.",
  "Moskowitz, T., Ooi, Y. y Pedersen, L. (2012). Time Series Momentum. Journal of Financial Economics, 104(2), 228-250."]:
+ "Quantpedia. (s. f.-a). Momentum Effect in Commodities. https://quantpedia.com/strategies/momentum-effect-in-commodities",
+ "Quantpedia. (s. f.-b). Momentum Factor Effect in Stocks. https://quantpedia.com/strategies/momentum-factor-effect-in-stocks",
     p = d.add_paragraph(ref); p.paragraph_format.left_indent = Cm(0.6); p.paragraph_format.first_line_indent = Cm(-0.6); p.runs[0].font.size = Pt(8.5)
 
 # ================= ANEXOS =================
