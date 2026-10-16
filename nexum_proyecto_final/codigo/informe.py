@@ -326,6 +326,15 @@ TB(["Clase", "Invertido el 14-sep", "Resultado (USD)", "Retorno Nexum", "Benchma
 rvv, cmv = vc.loc["Renta variable EE.UU."], vc.loc["Commodities"]
 P(f"Por clase de activo: la renta fija replica su benchmark, como corresponde a un núcleo pasivo; la renta variable queda {n_(-rvv['Diferencia (pp)'],1)} puntos bajo el S&P 500, en parte por las comisiones ({int(rvv['Operaciones'])} operaciones, USD {n_(10*rvv['Operaciones'],0)}) y en parte por el sesgo defensivo de Low-Volatility en un mercado al alza; commodities queda {n_(-cmv['Diferencia (pp)'],1)} puntos bajo su benchmark por la pérdida en USO, ya liquidado.")
 
+H("Desempeño semanal frente al benchmark", 3)
+TB(["Semana", "Nexum en la semana", "Benchmark en la semana", "Nexum acumulado", "Benchmark acumulado", "Diferencia acumulada"], [
+    ["11 al 18-sep", "−0,29%", "−0,15%", "−0,29%", "−0,15%", "−0,14 pp"],
+    ["19 al 25-sep", "−0,56%", "−0,37%", "−0,85%", "−0,52%", "−0,33 pp"],
+    ["26-sep al 2-oct", "−0,95%", "−0,64%", "−1,79%", "−1,16%", "−0,63 pp"],
+    ["3 al 9-oct", "+1,03%", "+1,01%", "−0,78%", "−0,16%", "−0,62 pp"],
+    ["10 al 14-oct", "−0,28%", "−0,05%", "−1,05%", "−0,21%", "−0,84 pp"]], w=[3, 2.6, 2.6, 2.6, 2.6, 2.6],
+   nota="Nexum: valor diario reconstruido con el historial de transacciones de StockTrak (incluye comisiones y dividendos) y precios de cierre; coincide con StockTrak al 6-oct (−1,15%). Al 14-oct da −1,05%; StockTrak informa −1,14% porque usa precios intradía del momento del export. Benchmark: benchmark de política (SPY, TLH, VCLT, QMOM, SPLV y DJP con los pesos aprobados sobre el 96% invertido, más 4% en T-Bills), retorno total. Base: cierre del 11-sep, la misma del dashboard del grupo. Fuente de precios: Yahoo Finance.")
+P("Lectura. En las semanas de alza de las tasas largas y caída del petróleo (hasta el 2-oct) Nexum cayó más que el benchmark; en la recuperación del 3 al 9-oct subió lo mismo, sin recuperar la brecha. La diferencia acumulada de −0,84 puntos se explica por las comisiones (62 operaciones, USD 620, cerca de 0,4 puntos), la pérdida en USO y la caja sin invertir en Momentum y commodities. El peor punto de Nexum fue −2,2% el 30-sep, lejos del gatillo de revisión de −15% del IPS. En el mismo período la AGF 85/15 rindió +0,65% y el S&P 500 +1,26%.")
 H("Por qué la cartera no rindió como esperábamos", 3)
 rfv, lqv = vc.loc["Renta fija larga EE.UU."], vc.loc["Liquidez (reserva)"]
 tot = vc["Resultado (USD)"].sum(); com = 10 * vc["Operaciones"].sum()
