@@ -204,6 +204,16 @@ TB(["Medido en", "Cartera", "Retorno medio 12 meses", "Volatilidad", "Peor 5%", 
    nota="20.000 escenarios de 12 meses por bootstrap de los retornos mensuales conjuntos de la cartera y del USD/CLP (2013-2026), con el dólar sin tendencia. Fuente: codigo/analisis_adicional.py.")
 P(f"Lectura. Medido en pesos, la moneda de las metas, el forward baja la volatilidad de {p_(fv('CLP','Sin cobertura','Volatilidad'))} a {p_(fv('CLP','Con el forward','Volatilidad'))} y el peor 5% de {p_(fv('CLP','Sin cobertura','Peor 5%'))} a {p_(fv('CLP','Con el forward','Peor 5%'))}. Medido en dólares, la aumenta ({p_(fv('USD','Sin cobertura','Volatilidad'))} → {p_(fv('USD','Con el forward','Volatilidad'))}): en los peores años de la cartera el peso se deprecia y el forward se paga (en promedio USD {n_(-fl['Compensación media en el 10% de peores años de la cartera en USD'],0)} en el 10% de peores años). Es el costo de medir el riesgo en la moneda de las metas, que es la que importa para la familia.")
 P(f"Liquidez. En {p_(fl['Probabilidad de pagar más que la reserva cambiaria (USD 3.000)'],0)} de los escenarios la compensación supera la reserva cambiaria de 2% (USD 3.000, que alcanza hasta un dólar de CLP {n_(fc['Tipo de cambio que agota la reserva cambiaria de 2% (USD 3.000)'],0)}); en el 5% más adverso Nexum paga ~USD {n_(fl['Pago en el 5% de escenarios más adversos (USD)'],0)}. Ese pago se financia con SGOV y venta de activos en USD, que en ese mismo escenario valen más en pesos. El valor de mercado del forward se informa mensualmente y la renovación se decide al vencimiento.")
+H("Política de cobertura por meta", 3)
+P(f"La cobertura se define por meta, siguiendo la lógica de calce de activos y obligaciones (Sharpe y Tint, 1990): cuánto se cubre depende de la moneda y de la cercanía de cada pago. Como toda la gestión se hace en StockTrak, que solo opera instrumentos en USD, la herramienta es el forward USD/CLP renovado al vencer cada contrato (roll-over). Lo que se paga en el contrato cuando el dólar sube no es una pérdida neta, porque los activos en USD valen más en pesos. El riesgo cambiario está incluido en la simulación: medido en UF, la probabilidad prospectiva de cumplir los tres objetivos es {p_(g('Nexum','Prosp','UF','P(3 objetivos)'))}, frente a {p_(g('Nexum','Prosp','USD','P(3 objetivos)'))} en USD.")
+TB(["Meta", "Horizonte", "Cobertura con forward USD/CLP renovado", "Fundamento"], [
+    ["Valor total de la cartera (hoy)", "Años 1-10", "~70% (rango 50-75%), renovado cada año", "El dólar sube cuando caen las bolsas; la parte no cubierta amortigua las caídas en pesos (Campbell, Serfaty-de Medeiros y Viceira, 2010)"],
+    ["Educación", "Años 14-20", "100% del valor presente de cada pago desde 3 años antes", "Meta rígida en UF: el descalce cambiario cercano al pago no alcanza a corregirse"],
+    ["Villarrica", "Año 25", "100% del valor presente del pago desde 3 años antes", "Meta en UF con fecha conocida"],
+    ["Herencia", "Año 50", "Parcial o nula", "A plazos largos el peso tiende a ajustarse por la diferencia de inflación (Rogoff, 1996) y el beneficio de cubrir cae (Froot, 1993)"]], w=[3.4, 2, 4.6, 6])
+B([("Costos y riesgos que se aceptan: ", f"los puntos forward ({p_(-fc['Puntos como % del spot (≈ tasa CLP − tasa USD)'],2)} del monto hoy) dependen del diferencial de tasas y se revisan en cada renovación; el contrato puede renovarse en peores condiciones; y las compensaciones exigen liquidez, que se cubre con la reserva, SGOV y el rebalanceo, sin vender acciones después de una caída."),
+   ("Lo que el forward no cubre: ", "la inflación chilena. Es el componente menor del riesgo frente a la UF y en el largo plazo queda recogido porque el modelo trabaja en USD reales."),
+   ("Mejora para la próxima revisión del IPS: ", "para los pagos fijos de Educación, un swap CLF/USD contra SOFR convertiría flujos en USD en flujos en UF a plazos largos. Se recomienda evaluarlo antes del año 11, porque es una herramienta más precisa que el forward para flujos conocidos.")])
 H("3.5 Benchmark de política", 2)
 TB(["Sleeve", "Peso", "Benchmark (índice invertible del mismo universo)"], [
     ["S&P 500", "37,9%", "S&P 500 (SPY)"], ["Tesoro 10-20 años", "16,9%", "ICE U.S. Treasury 10-20 Year Index (TLH)"], ["Corporativos largo plazo", "14,6%", "Bloomberg U.S. Long Corporate Index (VCLT)"],
@@ -351,12 +361,14 @@ for ref in ["Ang, A., Hodrick, R., Xing, Y. y Zhang, X. (2006). The Cross-Sectio
  "Barroso, P. y Santa-Clara, P. (2015). Momentum Has Its Moments. Journal of Financial Economics, 116(1), 111-120.",
  "Black, F. y Litterman, R. (1992). Global Portfolio Optimization. Financial Analysts Journal, 48(5), 28-43.",
  "Blitz, D. y van Vliet, P. (2007). The Volatility Effect. Journal of Portfolio Management, 34(1), 102-113.",
+ "Campbell, J. Y., Serfaty-de Medeiros, K. y Viceira, L. M. (2010). Global Currency Hedging. Journal of Finance, 65(1), 87-121.",
  "Carhart, M. (1997). On Persistence in Mutual Fund Performance. Journal of Finance, 52(1), 57-82.",
  "Daniel, K. y Moskowitz, T. (2016). Momentum Crashes. Journal of Financial Economics, 122(2), 221-247.",
  "DeMiguel, V., Garlappi, L. y Uppal, R. (2009). Optimal Versus Naive Diversification. Review of Financial Studies, 22(5), 1915-1953.",
  "Erb, C. y Harvey, C. (2006). The Strategic and Tactical Value of Commodity Futures. Financial Analysts Journal, 62(2), 69-97.",
  "Faber, M. (2007). A Quantitative Approach to Tactical Asset Allocation. Journal of Wealth Management, 9(4), 69-79.",
  "Frazzini, A. y Pedersen, L. (2014). Betting Against Beta. Journal of Financial Economics, 111(1), 1-25.",
+ "Froot, K. A. (1993). Currency Hedging over Long Horizons. NBER Working Paper 4355.",
  "Grinold, R. y Kahn, R. (2000). Active Portfolio Management (2a ed.). McGraw-Hill.",
  "Haugen, R. y Heins, A. (1975). Risk and the Rate of Return on Financial Assets. Journal of Financial and Quantitative Analysis, 10(5), 775-784.",
  "He, G. y Litterman, R. (1999). The Intuition Behind Black-Litterman Model Portfolios. Goldman Sachs Investment Management Research.",
@@ -366,7 +378,9 @@ for ref in ["Ang, A., Hodrick, R., Xing, Y. y Zhang, X. (2006). The Cross-Sectio
  "Miffre, J. y Rallis, G. (2007). Momentum Strategies in Commodity Futures Markets. Journal of Banking & Finance, 31(6), 1863-1886.",
  "Moskowitz, T., Ooi, Y. y Pedersen, L. (2012). Time Series Momentum. Journal of Financial Economics, 104(2), 228-250.",
  "Quantpedia. (s. f.-a). Momentum Effect in Commodities. https://quantpedia.com/strategies/momentum-effect-in-commodities",
- "Quantpedia. (s. f.-b). Momentum Factor Effect in Stocks. https://quantpedia.com/strategies/momentum-factor-effect-in-stocks"]:
+ "Quantpedia. (s. f.-b). Momentum Factor Effect in Stocks. https://quantpedia.com/strategies/momentum-factor-effect-in-stocks",
+ "Rogoff, K. (1996). The Purchasing Power Parity Puzzle. Journal of Economic Literature, 34(2), 647-668.",
+ "Sharpe, W. F. y Tint, L. G. (1990). Liabilities: A New Approach. Journal of Portfolio Management, 16(2), 5-10."]:
     p = d.add_paragraph(ref); p.paragraph_format.left_indent = Cm(0.6); p.paragraph_format.first_line_indent = Cm(-0.6); p.runs[0].font.size = Pt(8.5)
 
 # ================= ANEXOS =================
@@ -391,6 +405,8 @@ for q, a in [
   f"Porque con supuestos prudentes el retorno real esperado (~4,6%) queda levemente bajo el requerido ({p_(fac['TIR requerida'],2)}). Lo presentamos con transparencia en vez de mostrar solo el 96% histórico. Educación está asegurada en todos los escenarios; para Villarrica y la herencia se acordaron palancas que elevan la probabilidad a ~75%."),
  ("¿Por qué USD como moneda funcional si las necesidades del cliente están en UF y CLP?",
   "Todo el universo de inversión cotiza en USD. El peso se deprecia cuando caen los mercados (cobertura natural) y el ahorro en USD diversifica el riesgo país de una familia cuyo capital humano y vivienda están en Chile. Las simulaciones se presentan también en UF, y el riesgo cambiario de corto plazo se cubre parcialmente con un forward."),
+ ("¿Por qué solo un forward a un año, si las metas son de largo plazo?",
+  f"Porque se renueva al vencer cada contrato (roll-over) y la gestión debe hacerse con instrumentos de StockTrak, que están en USD. La cobertura es parcial a propósito: el dólar sube cuando caen las bolsas y la parte no cubierta amortigua las caídas en pesos. El riesgo cambiario está en la simulación (en UF la probabilidad de los tres objetivos es {p_(g('Nexum','Prosp','UF','P(3 objetivos)'))} frente a {p_(g('Nexum','Prosp','USD','P(3 objetivos)'))} en USD). A medida que se acerque cada pago en UF, la cobertura sube al 100% de ese monto, y para Educación recomendamos evaluar un swap CLF/USD en la próxima revisión del IPS."),
  ("Si el perfil excluye derivados, ¿por qué firmaron un forward?",
   f"El perfil excluye derivados complejos, apalancamiento y especulación. Un forward de monedas es el derivado más simple, se usa solo para cubrir y el monto es menor que la cartera, así que no apalanca. Cubre {p_(fc['Cobertura sobre el valor al 28-sep'],0)} de la cartera: más cobertura no reduce el riesgo en pesos, porque el peso ya se deprecia cuando caen los mercados. Su costo es bajo ({p_(-fc['Puntos como % del spot (≈ tasa CLP − tasa USD)'],2)} del monto) y su riesgo es de liquidez: si el dólar sube hay que pagar la compensación, pero en ese escenario la cartera vale más en pesos."),
  ("¿Contra qué se evalúa cada clase de activo?",
