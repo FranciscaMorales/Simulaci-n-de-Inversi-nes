@@ -1,0 +1,9 @@
+Escenario,Moneda,Orden,P(Educación),P(Villarrica),P(Herencia),P(3 objetivos)
+Histórico,USD,Educación → Villarrica → Herencia,1.0,0.98135,0.95955,0.95955
+Histórico,USD,Educación → Herencia → Villarrica,1.0,0.93375,0.99875,0.9326
+Histórico,UF,Educación → Villarrica → Herencia,1.0,0.9195,0.89645,0.89645
+Histórico,UF,Educación → Herencia → Villarrica,1.0,0.8732,0.9989,0.87225
+Prospectivo,USD,Educación → Villarrica → Herencia,1.0,0.713,0.4653,0.4653
+Prospectivo,USD,Educación → Herencia → Villarrica,1.0,0.48365,0.9196,0.43455
+Prospectivo,UF,Educación → Villarrica → Herencia,0.999,0.6451,0.4534,0.4534
+Prospectivo,UF,Educación → Herencia → Villarrica,0.999,0.47895,0.912,0.4286
