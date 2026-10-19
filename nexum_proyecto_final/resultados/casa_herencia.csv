@@ -1,0 +1,17 @@
+Moneda,Escenario (prospectivo),P(Villarrica),P(Herencia),P(3 objetivos)
+USD,Actual: sin la casa,0.713,0.4653,0.4653
+USD,Casa con valor constante en UF (base),0.713,0.68385,0.68385
+USD,Precio volátil: σ 5% anual,0.713,0.66965,0.66965
+USD,Precio volátil: σ 10% anual,0.713,0.64675,0.64675
+USD,"σ 10% y correlación 0,5 con la cartera",0.713,0.63485,0.63485
+USD,"Depreciación real −1% anual, σ 10%, correlación 0,5",0.713,0.6042,0.6042
+USD,Caída permanente de 30% al vender,0.713,0.6097,0.6097
+USD,Caída de 30% + costos de venta de 10%,0.713,0.6003,0.6003
+UF,Actual: sin la casa,0.6451,0.4534,0.4534
+UF,Casa con valor constante en UF (base),0.6451,0.5846,0.5846
+UF,Precio volátil: σ 5% anual,0.6451,0.5838,0.5838
+UF,Precio volátil: σ 10% anual,0.6451,0.57535,0.57535
+UF,"σ 10% y correlación 0,5 con la cartera",0.6451,0.56755,0.56755
+UF,"Depreciación real −1% anual, σ 10%, correlación 0,5",0.6451,0.5517,0.5517
+UF,Caída permanente de 30% al vender,0.6451,0.55995,0.55995
+UF,Caída de 30% + costos de venta de 10%,0.6451,0.5558,0.5558
