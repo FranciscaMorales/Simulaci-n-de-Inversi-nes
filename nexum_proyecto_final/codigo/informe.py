@@ -67,7 +67,7 @@ d.paragraphs[-1].runs[0].bold = True; d.paragraphs[-1].runs[0].font.color.rgb = 
 P("Investment Policy Statement e Informe de Estrategia de Inversión", al=WD_ALIGN_PARAGRAPH.CENTER).runs[0].font.size = Pt(14)
 P("Familia Allende Cunich · Mandato USD 150.000 + aportes anuales", al=WD_ALIGN_PARAGRAPH.CENTER)
 P("Grupo 11 — M. José Iannello, Martín Lillo, Francisca Morales, Vicente Salah, Matías Torres", it=True, al=WD_ALIGN_PARAGRAPH.CENTER)
-P("ESF 2026-2 · Universidad Adolfo Ibáñez · Datos de mercado al 31-ago-2026; implementación al 5-oct-2026", it=True, sz=9, al=WD_ALIGN_PARAGRAPH.CENTER)
+P("ESF 2026-2 · Universidad Adolfo Ibáñez · Datos de mercado al 31-ago-2026; implementación al 14-oct-2026", it=True, sz=9, al=WD_ALIGN_PARAGRAPH.CENTER)
 P("Todas las cifras de este documento son reproducibles con codigo/run_all.py y coinciden con modelo/Modelo_Nexum_v2.xlsx.", it=True, sz=8.5, al=WD_ALIGN_PARAGRAPH.CENTER)
 d.add_page_break()
 
@@ -187,9 +187,7 @@ B([("Bonos de duración intermedia (AGG, proxy de VCIT o SCHP): ", f"bajan la vo
 H("3.4 Moneda funcional: USD, con simulaciones en UF y cobertura con forward", 2)
 fx = T["Riesgo_cambiario"].set_index("Indicador")["Valor"]
 P("La moneda funcional es el USD porque todo el universo de inversión cotiza en dólares. Las necesidades del cliente (UF/CLP) se evalúan explícitamente: el Montecarlo se presenta también en UF y, desde el 28-sep-2026, parte del riesgo cambiario de corto plazo se cubre con un forward (ver más abajo).")
-B([("Cobertura natural: ", f"el peso se deprecia cuando caen los mercados globales (correlación S&P 500 vs. USD/CLP de {n_(fx.iloc[1])}). En el 10% de los peores meses del S&P 500 el dólar subió {p_(fx.iloc[2])} en promedio: la cartera perdió {p_(fx.iloc[3])} en USD pero solo {p_(fx.iloc[4])} medida en pesos."),
-   ("Diversificación del riesgo país: ", "el capital humano y la vivienda de la familia ya están expuestos a Chile."),
-   ("Costo: ", f"la volatilidad del USD/CLP es {p_(fx.iloc[0])} anual; medida en pesos, la volatilidad de la cartera sube de {p_(fx.iloc[5])} a {p_(fx.iloc[6])}, y la probabilidad conjunta histórica baja de {p_(g('Nexum','Hist','USD','P(3 objetivos)'))} a {p_(g('Nexum','Hist','UF','P(3 objetivos)'))}. Se monitorea en cada revisión.")])
+P(f"Mantener la cartera en dólares tiene dos ventajas para esta familia. Primero, funciona como una cobertura natural: el peso chileno tiende a depreciarse cuando caen los mercados globales (la correlación entre el S&P 500 y el tipo de cambio es {n_(fx.iloc[1])}), de modo que en el 10% de los peores meses del S&P 500 el dólar subió {p_(fx.iloc[2])} en promedio y la cartera, que perdió {p_(-fx.iloc[3])} en dólares, perdió solo {p_(-fx.iloc[4])} medida en pesos. Segundo, diversifica el riesgo país, porque el empleo y la vivienda de la familia ya dependen de Chile. La contracara es el riesgo cambiario: el tipo de cambio tiene una volatilidad de {p_(fx.iloc[0])} anual, por lo que, medida en pesos, la volatilidad de la cartera sube de {p_(fx.iloc[5])} a {p_(fx.iloc[6])} y la probabilidad histórica de cumplir los tres objetivos baja de {p_(g('Nexum','Hist','USD','P(3 objetivos)'))} a {p_(g('Nexum','Hist','UF','P(3 objetivos)'))}. Por eso ese costo se mide en cada revisión y se cubre en parte con el forward que se describe a continuación.")
 H("Cobertura cambiaria con forward USD/CLP", 3)
 fc = AD["Forward_condiciones"].set_index("Concepto")["Valor"]; fs = AD["Forward_simulacion"]; fl = AD["Forward_liquidacion"].set_index("Indicador")["Valor"]
 fr = AD["Forward_razon_cobertura"]; h_opt = fr.loc[fr["Volatilidad 12m en CLP"].idxmin(), "Razón de cobertura"]
@@ -199,6 +197,7 @@ TB(["Banco", "Fecha de cotización", "Plazo", "Spot (CLP)", "Puntos forward (ven
     ["Banco de Chile (BDCH)", "28-sep-2026", "1 año (vence 30-sep-2027)", "967,32", "−4,24", "963,08", "Contratado"],
     ["BCI", "28-sep-2026", "1 año (vence 30-sep-2027)", "967,33 (bid)", "−0,30 / +0,30 (bid/ask)", "967,03 / 968,45", "Referencia"]], w=[2.8, 2.2, 2.8, 1.8, 2.6, 2.4, 1.6],
    nota="Fuente: Bloomberg, FX Forward Calculator (USD/CLP NDF, fuente forward BCI; spot REGN). Se contrató con Banco de Chile porque sus puntos son coherentes con la paridad cubierta de tasas (tasa en pesos menor que en dólares implica puntos negativos de ~0,4% anual). La curva de BCI mostró puntos simétricos y redondos (±0,30 a 1 año, ±1,00 a 2 años, ±3,00 a 5 años), propios de una cotización indicativa, por lo que no se usó para contratar.")
+P("¿Qué significa este contrato al vencimiento? Nexum vende USD 104.000 a CLP 963,08, pase lo que pase con el dólar. La tabla muestra la compensación en distintos escenarios: si el dólar cae bajo ese precio, el banco le paga la diferencia a Nexum; si sube, Nexum la paga. En ambos casos el resultado compensa lo que le pasa a la cartera medida en pesos, que es justamente el objetivo de la cobertura.")
 TB(["Dólar al vencimiento (CLP)", "Compensación (MM CLP)", "Compensación (USD)", "Para Nexum"],
    [[n_(r["Dólar al vencimiento (CLP)"]), n_(r["Compensación (MM CLP)"]), n_(r["Compensación (USD)"], 0), r["Lectura"]] for _, r in AD["Forward_escenarios"].iterrows()], w=[4, 4, 4, 4],
    nota="Compensación = USD 104.000 × (precio forward − dólar al vencimiento). Si el dólar sube, Nexum paga la diferencia, pero la cartera en USD vale más en pesos; si baja, Nexum recibe la diferencia y compensa la pérdida de valor en pesos.")
