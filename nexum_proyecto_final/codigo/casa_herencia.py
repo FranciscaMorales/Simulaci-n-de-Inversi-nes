@@ -32,7 +32,20 @@ def sim(serie, fx=None, casa_uf=VILLARRICA_UF, mu=0.0, sigma=0.0, rho=0.0, costo
             ok_h = bal + casa >= HERENCIA_USD - 1e-6
     return {"P(Villarrica)": ok_v.mean(), "P(Herencia)": ok_h.mean(), "P(3 objetivos)": (ok_e & ok_v & ok_h).mean()}
 
-ESC = [("Actual: sin la casa", dict(con_casa=False)),
+# Calibración con el Índice de Precios de Vivienda del BCCh (casas usadas, UF por m², trimestral 2002-2026)
+ipv = pd.read_csv("../datos/ipv_bcch_2002_2026.csv", parse_dates=["fecha"]).set_index("fecha")["ipv_casas_usadas"].dropna()
+rq = np.log(ipv).diff().dropna()
+MU_H = np.log(ipv.iloc[-1] / ipv.iloc[0]) / ((ipv.index[-1] - ipv.index[0]).days / 365.25)   # deriva real anual (log)
+SIG_H = rq.std() * 2                                                                         # volatilidad anual
+DD_H = (ipv / ipv.cummax() - 1).min()                                                         # peor caída histórica
+cart_q = np.log1p(pn_h).resample("QS").sum()
+cart_q.index = cart_q.index + pd.DateOffset(months=2)   # trimestre ene-mar se rotula 1-mar, como el IPV
+RHO_H = pd.concat([rq.rename("casa"), cart_q.rename("cart")], axis=1, join="inner").corr().iloc[0, 1]
+print(f"IPV casas usadas: deriva real {np.expm1(MU_H):.2%}, vol {SIG_H:.2%}, peor caída {DD_H:.1%}, correlación con la cartera {RHO_H:.2f}")
+ESC = [("IPV histórico: deriva y volatilidad 2002-2026", dict(mu=MU_H, sigma=SIG_H, rho=max(RHO_H, 0))),
+       ("IPV: deriva 0% real y volatilidad histórica", dict(mu=0.0, sigma=SIG_H, rho=max(RHO_H, 0))),
+       ("IPV: deriva 0%, volatilidad histórica y peor caída histórica al vender", dict(mu=0.0, sigma=SIG_H, rho=max(RHO_H, 0), shock=-DD_H)),
+("Actual: sin la casa", dict(con_casa=False)),
        ("Casa con valor constante en UF (base)", dict()),
        ("Precio volátil: σ 5% anual", dict(sigma=0.05)),
        ("Precio volátil: σ 10% anual", dict(sigma=0.10)),

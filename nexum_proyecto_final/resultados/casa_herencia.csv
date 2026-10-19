@@ -1,4 +1,7 @@
 Moneda,Escenario (prospectivo),P(Villarrica),P(Herencia),P(3 objetivos)
+USD,IPV histórico: deriva y volatilidad 2002-2026,0.713,0.713,0.713
+USD,IPV: deriva 0% real y volatilidad histórica,0.713,0.6633,0.6633
+USD,"IPV: deriva 0%, volatilidad histórica y peor caída histórica al vender",0.713,0.6397,0.6397
 USD,Actual: sin la casa,0.713,0.4653,0.4653
 USD,Casa con valor constante en UF (base),0.713,0.68385,0.68385
 USD,Precio volátil: σ 5% anual,0.713,0.66965,0.66965
@@ -7,6 +10,9 @@ USD,"σ 10% y correlación 0,5 con la cartera",0.713,0.63485,0.63485
 USD,"Depreciación real −1% anual, σ 10%, correlación 0,5",0.713,0.6042,0.6042
 USD,Caída permanente de 30% al vender,0.713,0.6097,0.6097
 USD,Caída de 30% + costos de venta de 10%,0.713,0.6003,0.6003
+UF,IPV histórico: deriva y volatilidad 2002-2026,0.6451,0.63325,0.63325
+UF,IPV: deriva 0% real y volatilidad histórica,0.6451,0.5812,0.5812
+UF,"IPV: deriva 0%, volatilidad histórica y peor caída histórica al vender",0.6451,0.57085,0.57085
 UF,Actual: sin la casa,0.6451,0.4534,0.4534
 UF,Casa con valor constante en UF (base),0.6451,0.5846,0.5846
 UF,Precio volátil: σ 5% anual,0.6451,0.5838,0.5838
