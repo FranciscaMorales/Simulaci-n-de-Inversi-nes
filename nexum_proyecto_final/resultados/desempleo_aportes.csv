@@ -1,0 +1,37 @@
+Escenario,Mercado,Moneda,TIR requerida,P(Educación),P(Villarrica),P(Herencia),P(3 objetivos)
+Base: los 19 aportes,Histórico,USD,0.046531305003655606,1.0,0.98135,0.95955,0.95955
+Base: los 19 aportes,Histórico,UF,0.046531305003655606,1.0,0.9195,0.89645,0.89645
+Base: los 19 aportes,Prospectivo,USD,0.046531305003655606,1.0,0.713,0.4653,0.4653
+Base: los 19 aportes,Prospectivo,UF,0.046531305003655606,0.999,0.6451,0.4534,0.4534
+"1 año sin aporte, ahora (año 1)",Histórico,USD,0.04814054176154317,1.0,0.97685,0.9501,0.9501
+"1 año sin aporte, ahora (año 1)",Histórico,UF,0.04814054176154317,1.0,0.90805,0.88235,0.88235
+"1 año sin aporte, ahora (año 1)",Prospectivo,USD,0.04814054176154317,1.0,0.6775,0.42885,0.42885
+"1 año sin aporte, ahora (año 1)",Prospectivo,UF,0.04814054176154317,0.9985,0.61835,0.42415,0.42415
+"2 años sin aporte, ahora (años 1-2)",Histórico,USD,0.04975748283854328,1.0,0.9707,0.93955,0.93955
+"2 años sin aporte, ahora (años 1-2)",Histórico,UF,0.04975748283854328,0.99995,0.89675,0.86715,0.86715
+"2 años sin aporte, ahora (años 1-2)",Prospectivo,USD,0.04975748283854328,1.0,0.63855,0.39145,0.39145
+"2 años sin aporte, ahora (años 1-2)",Prospectivo,UF,0.04975748283854328,0.998,0.5958,0.3951,0.3951
+"1 año sin aporte, a mitad de camino (año 7)",Histórico,USD,0.04773977197135606,1.0,0.97775,0.9525,0.9525
+"1 año sin aporte, a mitad de camino (año 7)",Histórico,UF,0.04773977197135606,1.0,0.9114,0.8873,0.8873
+"1 año sin aporte, a mitad de camino (año 7)",Prospectivo,USD,0.04773977197135606,1.0,0.68425,0.43745,0.43745
+"1 año sin aporte, a mitad de camino (año 7)",Prospectivo,UF,0.04773977197135606,0.9986,0.62485,0.432,0.432
+"2 años sin aporte, a mitad de camino (años 7-8)",Histórico,USD,0.04892186084069051,1.0,0.97395,0.94495,0.94495
+"2 años sin aporte, a mitad de camino (años 7-8)",Histórico,UF,0.04892186084069051,1.0,0.9048,0.8782,0.8782
+"2 años sin aporte, a mitad de camino (años 7-8)",Prospectivo,USD,0.04892186084069051,1.0,0.65475,0.41055,0.41055
+"2 años sin aporte, a mitad de camino (años 7-8)",Prospectivo,UF,0.04892186084069051,0.99825,0.6059,0.4093,0.4093
+"1 año sin aporte, antes de la universidad (año 13)",Histórico,USD,0.047443449768885725,1.0,0.97825,0.95405,0.95405
+"1 año sin aporte, antes de la universidad (año 13)",Histórico,UF,0.047443449768885725,1.0,0.914,0.8908,0.8908
+"1 año sin aporte, antes de la universidad (año 13)",Prospectivo,USD,0.047443449768885725,1.0,0.68995,0.44495,0.44495
+"1 año sin aporte, antes de la universidad (año 13)",Prospectivo,UF,0.047443449768885725,0.99865,0.62915,0.4365,0.4365
+"2 años sin aporte, antes de la universidad (años 12-13)",Histórico,USD,0.04840880723086906,1.0,0.97545,0.94755,0.94755
+"2 años sin aporte, antes de la universidad (años 12-13)",Histórico,UF,0.04840880723086906,1.0,0.90895,0.883,0.883
+"2 años sin aporte, antes de la universidad (años 12-13)",Prospectivo,USD,0.04840880723086906,1.0,0.66415,0.42305,0.42305
+"2 años sin aporte, antes de la universidad (años 12-13)",Prospectivo,UF,0.04840880723086906,0.99835,0.6128,0.4185,0.4185
+"2 años sin aporte, con las dos carreras (años 16-17)",Histórico,USD,0.04808450394748072,1.0,0.9764,0.94905,0.94905
+"2 años sin aporte, con las dos carreras (años 16-17)",Histórico,UF,0.04808450394748072,1.0,0.9112,0.8867,0.8867
+"2 años sin aporte, con las dos carreras (años 16-17)",Prospectivo,USD,0.04808450394748072,1.0,0.67015,0.4297,0.4297
+"2 años sin aporte, con las dos carreras (años 16-17)",Prospectivo,UF,0.04808450394748072,0.9985,0.61685,0.42405,0.42405
+Palanca combinada: 2 años sin aporte (1-2) + herencia USD 250 mil,Histórico,USD,0.0451256182398577,1.0,0.9707,0.9571,0.9571
+Palanca combinada: 2 años sin aporte (1-2) + herencia USD 250 mil,Histórico,UF,0.0451256182398577,0.99995,0.89675,0.88375,0.88375
+Palanca combinada: 2 años sin aporte (1-2) + herencia USD 250 mil,Prospectivo,USD,0.0451256182398577,1.0,0.63855,0.50175,0.50175
+Palanca combinada: 2 años sin aporte (1-2) + herencia USD 250 mil,Prospectivo,UF,0.0451256182398577,0.998,0.5958,0.4953,0.4953
